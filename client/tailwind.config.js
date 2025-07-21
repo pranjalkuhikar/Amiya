@@ -17,6 +17,13 @@ export default {
         extrabold: "800",
         black: "900",
       },
+      colors: {
+        primary: "#f15025", // Orange
+        white: "#ffffff",
+        lightgray: "#e6e8e6",
+        gray: "#ced0ce",
+        black: "#191919",
+      },
     },
   },
   corePlugins: {
