@@ -66,29 +66,30 @@ const Loader = ({ onComplete }) => {
         "-=0.3"
       );
 
-      // Smooth exit animation to top
+      // Split loader into two panels
       tl.to(
-        ".loader",
+        ".loader-panel.left",
         {
           duration: 1.2,
-          y: () => `-${window.innerHeight}px`, // Use window height for consistent behavior
-          ease: "power3.inOut",
-          scale: 0.98,
-          opacity: 0,
+          x: "-100%",
+          ease: "power2.inOut",
+        },
+        "+=0.3"
+      ).to(
+        ".loader-panel.right",
+        {
+          duration: 1.2,
+          x: "100%",
+          ease: "power2.inOut",
           onStart: () => {
-            console.log("Starting exit animation");
             document.body.classList.add("no-scroll");
-            // Force reflow to ensure transform is applied
-            document.body.offsetHeight;
           },
           onComplete: () => {
-            console.log("Exit animation complete");
             document.body.classList.remove("no-scroll");
-            // Ensure loader is hidden after animation
             gsap.set(".loader", { display: "none" });
           },
         },
-        "+=0.3"
+        "<"
       );
     },
     { scope: loaderRef, dependencies: [onComplete] }
@@ -104,22 +105,20 @@ const Loader = ({ onComplete }) => {
   return (
     <div
       ref={loaderRef}
-      className="loader fixed top-0 left-0 right-0 bottom-0 w-full h-screen bg-white flex flex-col items-center justify-center z-50 overflow-hidden transform-gpu will-change-transform"
-      style={{
-        transformOrigin: 'center center',
-        backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden',
-        willChange: 'transform, opacity'
-      }}
+      className="loader fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden"
     >
-      <div className="relative h-28 overflow-hidden">
-        <div className="counter text-6xl md:text-8xl font-light tracking-tight opacity-0 transform translate-y-10">
-          {counter}%
-        </div>
-        <div className="logo absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0">
-          <h1 className="text-4xl md:text-6xl font-light tracking-tight">
-            Amiya
-          </h1>
+      <div className="loader-panel left absolute top-0 left-0 w-1/2 h-full bg-white transform-gpu will-change-transform" />
+      <div className="loader-panel right absolute top-0 right-0 w-1/2 h-full bg-white transform-gpu will-change-transform" />
+      <div className="loader-content absolute top-0 left-0 right-0 bottom-0 w-full h-full flex flex-col items-center justify-center pointer-events-none">
+        <div className="relative h-28 overflow-hidden">
+          <div className="counter text-6xl md:text-8xl font-light tracking-tight opacity-0 transform translate-y-10">
+            {counter}%
+          </div>
+          <div className="logo absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0">
+            <h1 className="text-4xl md:text-6xl font-light tracking-tight">
+              Amiya
+            </h1>
+          </div>
         </div>
       </div>
     </div>
