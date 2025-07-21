@@ -6,7 +6,7 @@ import ProductDetails from "../pages/Product/ProductDetails/ProductDetails";
 import About from "../pages/About/About";
 import SignIn from "../pages/Auth/SignIn/SignIn";
 import SignUp from "../pages/Auth/SignUp/SignUp";
-import Cart from "../pages/Product/Card/Cart";
+import Cart from "../pages/Product/Cart/Cart";
 
 const AppRouter = () => {
   return (
