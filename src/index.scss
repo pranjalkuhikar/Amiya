@@ -1,3 +1,4 @@
+/* PPMori Font Family */
 @font-face {
   font-family: "PPR";
   src: url("/fonts/PPMori-Regular.woff2") format("woff2");
@@ -11,6 +12,31 @@
   src: url("/fonts/PPMori-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Editorial New Font Family */
+@font-face {
+  font-family: "PPER";
+  src: url("/fonts/EditorialNew-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPEI";
+  src: url("/fonts/EditorialNew-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PEI";
+  src: url("/fonts/EditorialNew-Lightitalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
   font-display: swap;
 }
 

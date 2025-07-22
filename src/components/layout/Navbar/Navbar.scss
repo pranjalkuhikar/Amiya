@@ -1,8 +1,16 @@
 nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em 5em;
+  color: #fff;
+  background: transparent;
+  transition: background-color 0.3s ease;
   .logo {
     text-decoration: none;
     color: inherit;
@@ -43,13 +51,12 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1em;
+    gap: 1.4em;
     font-family: "PPR";
     font-size: 15px;
-    border-radius: 5px;
-    padding: 0.5em 1em;
     color: #000;
-    border-radius: 100%;
+    border-radius: 25px;
+    padding: 0.5em 1.7em;
     background-color: #fff;
     cursor: pointer;
     transition: all 0.3s ease-in-out;

@@ -1,3 +1,178 @@
 .home {
-  font-size: 1rem;
+  position: relative;
+  height: 100vh;
+  padding-top: 80px; /* Height of the navbar */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+  z-index: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("./images/amiya-astrakan.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.7);
+    z-index: -1;
+  }
+
+  &__banner {
+    display: none;
+  }
+
+  &__content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 10px;
+
+    &__title {
+      font-size: 5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: 2px;
+      font-family: PPR;
+      text-transform: lowercase;
+      span {
+        color: #fff;
+        font-family: PPEI;
+        text-transform: capitalize;
+      }
+    }
+
+    &__text {
+      font-size: 0.9rem;
+      margin-bottom: 3rem;
+      line-height: 1.2;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: PPR;
+    }
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    top: 20%;
+    gap: 1em;
+    width: 50em;
+    font-family: PPR;
+    font-size: 15px;
+    color: #3b3b3b;
+    text-transform: uppercase;
+    text-decoration: underline;
+    border-radius: 35px;
+    padding: 0.4em 0.4em;
+    background-color: #ffffffbc;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    .line2 {
+      background-color: #3b3b3b;
+      border-radius: 100%;
+      padding: 0.8em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      position: relative;
+      overflow: hidden;
+      padding: 1.5em;
+
+      span {
+        position: absolute;
+        transition: all 0.5s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:first-child {
+          transform: translateX(0);
+        }
+
+        &:last-child {
+          transform: translateX(-100%);
+        }
+      }
+    }
+
+    &:hover .line2 {
+      scale: 1.2;
+      transition: all 0.5s ease-in-out;
+      span:first-child {
+        transform: translateX(180%);
+      }
+
+      span:last-child {
+        transform: translateX(0);
+        transition-delay: 0.2s;
+      }
+    }
+
+    &:not(:hover) .line2 {
+      span:first-child {
+        transform: translateX(0);
+        transition-delay: 0.2s;
+      }
+
+      span:last-child {
+        transform: translateX(-180%);
+      }
+    }
+
+    & > div {
+      cursor: pointer;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .home {
+    &__content {
+      padding: 1.5rem;
+
+      &__title {
+        font-size: 2.5rem;
+      }
+
+      &__text {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .home {
+    &__content {
+      &__title {
+        font-size: 2rem;
+      }
+
+      &__text {
+        font-size: 1rem;
+      }
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      font-size: 0.9rem;
+    }
+  }
 }
