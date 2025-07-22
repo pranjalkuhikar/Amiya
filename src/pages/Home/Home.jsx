@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "keen-slider/keen-slider.min.css";
 import SliderCards from "../../components/SliderCard/SliderCards";
 import ArrowButton from "../../components/common/ArrowButton";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -179,7 +180,10 @@ const Home = () => {
               <h2 className="text-4xl md:text-6xl font-bold text-start mb-6">
                 Shirt <br />
                 <div className="flex w-full items-center justify-between gap-2">
-                  <span>Collection</span> <ArrowButton />
+                  <span>Collection</span>{" "}
+                  <Link to="/shop" aria-label="Go to shop">
+                    <ArrowButton />
+                  </Link>
                 </div>
               </h2>
 
@@ -211,7 +215,10 @@ const Home = () => {
               <h2 className="text-4xl md:text-6xl font-bold mb-6">
                 Trouser <br />
                 <div className="flex w-full items-center justify-between gap-2">
-                  <span>Collection</span> <ArrowButton />
+                  <span>Collection</span>{" "}
+                  <Link to="/shop" aria-label="Go to shop">
+                    <ArrowButton />
+                  </Link>
                 </div>
               </h2>
               <SliderCards cards={pantCards} />
