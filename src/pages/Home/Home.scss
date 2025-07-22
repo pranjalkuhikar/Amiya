@@ -1,14 +1,12 @@
 .home {
   position: relative;
-  height: 100vh;
-  padding-top: 80px; /* Height of the navbar */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: #fff;
-  padding: 2rem;
   z-index: 1;
 
   &::before {
@@ -31,13 +29,13 @@
   }
 
   &__content {
-    max-width: 800px;
+    max-width: 70em;
     margin: 0 auto;
     padding: 2rem;
     border-radius: 10px;
 
     &__title {
-      font-size: 5rem;
+      font-size: 4rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
@@ -66,15 +64,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
-    top: 20%;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
     gap: 1em;
     width: 50em;
+    max-width: 90%;
     font-family: PPR;
     font-size: 15px;
     color: #3b3b3b;
     text-transform: uppercase;
     text-decoration: underline;
+    border-color: #3b3b3b;
     border-radius: 35px;
     padding: 0.4em 0.4em;
     background-color: #ffffffbc;

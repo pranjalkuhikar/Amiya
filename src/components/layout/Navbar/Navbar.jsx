@@ -1,11 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./Navbar.scss";
 
 const Navbar = () => {
+  const location = useLocation();
+  const [isHome, setIsHome] = useState(true);
+
+  useEffect(() => {
+    // Check if current path is home
+    setIsHome(location.pathname === "/");
+  }, [location]);
+
   return (
     <>
-      <nav>
+      <nav className={isHome ? "" : "scrolled"}>
         <Link to="/" className="logo">
           Amiya
         </Link>

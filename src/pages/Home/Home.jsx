@@ -8,11 +8,12 @@ const Home = () => {
       <div className="home">
         <div className="home__content">
           <div className="home__content__title">
-            <span>True</span> to Oneself kind to <span>Nature</span>
+            <span>Consciously</span> made clothing that feels <span>Good</span>{" "}
+            - on you
           </div>
           <div className="home__content__text">
-            Unreservedly honest products that truly work, be kind to skin and
-            the planet - no exceptions!
+            Unreservedly honest clothing that truly fits your life - kind to
+            skin and the planet, no exceptions!
           </div>
         </div>
         <div className="btn">
