@@ -4,19 +4,17 @@
 */
 
 .slider-cards {
-  display: flex;
-  align-items: stretch;
-  gap: 24px;
+  /* Let Keen Slider manage layout & spacing */
   width: 100%;
-  max-width: 100%;
   height: auto;
+  overflow: hidden;
 }
 
 .card-slide {
   flex: 0 0 auto;
   display: flex;
   align-items: stretch;
-  width: calc(25% - 24px); /* ~4 cards on desktop */
+  /* Width & spacing handled by Keen Slider */
 }
 
 .slider-card {
@@ -63,28 +61,34 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .card-slide {
-    width: calc(33.333% - 16px); /* 3 per view */
-    gap: 16px;
+    /* width handled by Keen Slider */
+    /* gap handled by Keen Slider spacing */
+  }
+  .slider-card {
+    aspect-ratio: 3 / 4;
   }
 }
 
 /* Small tablets & large phones */
 @media (max-width: 768px) {
   .slider-cards {
-    gap: 12px;
+    /* gap handled by Keen Slider spacing */
   }
   .card-slide {
-    width: calc(50% - 12px); /* 2 per view */
+    /* width handled by Keen Slider */
+  }
+  .slider-card {
+    aspect-ratio: 3 / 4;
   }
 }
 
 /* Phones */
 @media (max-width: 480px) {
   .slider-cards {
-    gap: 8px;
+    /* gap handled by Keen Slider spacing */
   }
   .card-slide {
-    width: 80vw; /* 1 per view */
+    /* width handled by Keen Slider */
   }
   .slider-card {
     aspect-ratio: 3 / 4;
