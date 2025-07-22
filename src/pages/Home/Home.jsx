@@ -153,7 +153,9 @@ const Home = () => {
 
       {/* Full Screen Sections */}
       <div className="sections-container">
-        <div className="text font-[PPS]">Explore</div>
+        <h2 className="text font-[PPS]">
+          Explore <span>Collection</span>
+        </h2>
         {/* First Section */}
         <section
           ref={(el) => addToRefs(el, sectionRefs)}
