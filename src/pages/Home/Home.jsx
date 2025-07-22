@@ -99,11 +99,7 @@ const Home = () => {
           },
         })
         .to(image, { opacity: 1, y: 0, duration: 1, ease: "power2.out" })
-        .to(
-          text,
-          { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-          "-=0.9"
-        );
+        .to(text, { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=1");
 
       // Parallax effect for images
       gsap.to(image, {

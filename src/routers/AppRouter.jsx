@@ -7,6 +7,7 @@ import Contact from "../pages/Contact/Contact";
 import Cart from "../pages/Cart/Cart";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
+import Footer from "../components/layout/Footer/Footer";
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AppRouter = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <Footer />
     </>
   );
 };
