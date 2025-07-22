@@ -1,4 +1,9 @@
 nav {
+  background: #3b3b3b;
+  border-radius: 9999px;
+  padding-left: 2em;
+  padding-right: 2em;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
   position: fixed;
   top: 0;
   left: 0;
@@ -9,6 +14,104 @@ nav {
   justify-content: space-between;
   padding: 1em 5em;
   transition: all 0.5s ease-in-out;
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1200;
+    span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      margin: 4px 0;
+      background: currentColor;
+      border-radius: 2px;
+      transition: 0.4s;
+    }
+    &.open span:nth-child(1),
+    span.open:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    &.open span:nth-child(2),
+    span.open:nth-child(2) {
+      opacity: 0;
+    }
+    &.open span:nth-child(3),
+    span.open:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+  }
+
+  .desktop-menu {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    padding: 1em 1.2em;
+    .desktop-menu {
+      display: none !important;
+    }
+    .hamburger {
+      display: flex;
+    }
+    .mobile-menu {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      font-family: "PPR";
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.98);
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      padding: 6em 2em 2em 2em;
+      gap: 2em;
+      align-items: center;
+      font-size: 1.3em;
+      z-index: 1100;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-30px);
+      transition: opacity 0.3s, transform 0.3s;
+      a {
+        color: #fff;
+        font-weight: 500;
+        font-size: 1.1em;
+        padding: 0.7em 0;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+        margin-top: 1em;
+        font-size: 1em;
+        padding: 0.7em 1em;
+        border-radius: 18px;
+        background: #3b3b3b;
+        color: #fff;
+        display: flex;
+        gap: 1em;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  }
 
   /* Default styles (for non-home pages) */
   background-color: #fff;

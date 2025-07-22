@@ -1,0 +1,58 @@
+.arrow-btn {
+  background-color: #3b3b3b;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: scale 0.3s;
+  overflow: hidden;
+  padding: 0;
+  outline: none;
+
+  .arrow-animation {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      position: absolute;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:first-child {
+        transform: translateX(0);
+      }
+      &:last-child {
+        transform: translateX(-100%);
+      }
+    }
+  }
+
+  &:hover .arrow-animation {
+    scale: 1.2;
+    span:first-child {
+      transform: translateX(220%);
+    }
+    span:last-child {
+      transform: translateX(0);
+      transition-delay: 0.2s;
+    }
+  }
+  &:not(:hover) .arrow-animation {
+    span:first-child {
+      transform: translateX(0);
+      transition-delay: 0.2s;
+    }
+    span:last-child {
+      transform: translateX(-220%);
+    }
+  }
+}

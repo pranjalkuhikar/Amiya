@@ -1,0 +1,92 @@
+/* SliderCards.scss
+   Custom responsive styles for the card slider component.
+   Desktop view sizes remain unchanged; mobile & tablet scale smoothly.
+*/
+
+.slider-cards {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.card-slide {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  width: calc(25% - 24px); /* ~4 cards on desktop */
+}
+
+.slider-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.slider-card__img {
+  width: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.slider-card__body {
+  flex: 1 1 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Typography */
+.slider-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.slider-card__desc {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.slider-card__price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .card-slide {
+    width: calc(33.333% - 16px); /* 3 per view */
+    gap: 16px;
+  }
+}
+
+/* Small tablets & large phones */
+@media (max-width: 768px) {
+  .slider-cards {
+    gap: 12px;
+  }
+  .card-slide {
+    width: calc(50% - 12px); /* 2 per view */
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .slider-cards {
+    gap: 8px;
+  }
+  .card-slide {
+    width: 80vw; /* 1 per view */
+  }
+  .slider-card {
+    aspect-ratio: 3 / 4;
+  }
+}
