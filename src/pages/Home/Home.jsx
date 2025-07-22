@@ -7,6 +7,7 @@ import "keen-slider/keen-slider.min.css";
 import SliderCards from "../../components/SliderCard/SliderCards";
 import ArrowButton from "../../components/common/ArrowButton";
 import { Link } from "react-router-dom";
+import ScrollVelocity from "../../components/ScrollVelocity";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -221,6 +222,14 @@ const Home = () => {
             </div>
           </div>
         </section>
+      </div>
+      <div>
+        <ScrollVelocity
+          texts={[
+            "Explore Collection Shirt and Top Pants and Shots Sweters and Jackets Skirts Dresses",
+          ]}
+          className="custom-scroll-text"
+        />
       </div>
     </>
   );
