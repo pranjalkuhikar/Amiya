@@ -4,11 +4,14 @@ import "./index.scss";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
+import LenisProvider from "./components/LenisProvider";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <LenisProvider>
+        <App />
+      </LenisProvider>
     </BrowserRouter>
   </StrictMode>
 );

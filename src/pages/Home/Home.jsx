@@ -29,6 +29,21 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div>
+        <h1>Explore All Products</h1>
+        <div>
+          <div>
+            <img src="" alt="" />
+          </div>
+          <div>img</div>
+        </div>
+        <div>
+          <div>img</div>
+          <div>
+            <img src="" alt="" />
+          </div>
+        </div>
+      </div>
     </>
   );
 };
