@@ -1,0 +1,41 @@
+.part-1,
+.part-2 {
+  padding: 2em 4em;
+}
+
+.footer {
+  margin-top: 4em;
+
+  a {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    text-decoration: none;
+    font-family: "PPR";
+    width: fit-content;
+
+    &::after {
+      content: "";
+      position: absolute;
+      padding: 0;
+      width: 0;
+      height: 1px;
+      bottom: 0;
+      left: 55%;
+      transform: translateX(-55%);
+      background-color: currentColor;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .part-1,
+  .part-2 {
+    padding: 1em 2em;
+  }
+}

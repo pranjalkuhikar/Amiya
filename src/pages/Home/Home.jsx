@@ -135,7 +135,7 @@ const Home = () => {
             skin and the planet, no exceptions!
           </div>
         </div>
-        <div className="btn">
+        <Link to="/shop" className="btn">
           <div className="line1"></div>
           <div className="text">Explore All Products</div>
           <div className="line2">
@@ -146,7 +146,7 @@ const Home = () => {
               <MoveRight size={20} color="#fff" />
             </span>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Full Screen Sections */}
