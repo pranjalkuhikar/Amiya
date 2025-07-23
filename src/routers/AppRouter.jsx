@@ -7,6 +7,7 @@ import Contact from "../pages/Contact/Contact";
 import Cart from "../pages/Cart/Cart";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
+import Dashboard from "../pages/Account/Dashboard";
 import Footer from "../components/layout/Footer/Footer";
 
 const AppRouter = () => {
@@ -21,6 +22,7 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/account" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
