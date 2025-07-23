@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Filter } from "lucide-react";
-import {
-  useGetProductsQuery,
-  useAddToCartMutation,
-} from "../../features/apiSlice";
+import { useGetProductsQuery } from "../../features/apiSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
@@ -23,11 +20,40 @@ const CategoryPage = () => {
     setIsClient(true);
   }, []);
 
-  const [addToCart] = useAddToCartMutation();
+  // Handle add to cart with localStorage
+  const handleAddToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const existingItem = cart.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({
+        ...product,
+        quantity: 1,
+        price: parseFloat(product.price),
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    toast.success(`${product.name} added to cart`);
+  };
 
   const filterOptions = {
     size: ["XS", "S", "M", "L", "XL"],
-    color: ["white", "black", "blue", "beige"],
+    color: [
+      "white",
+      "black",
+      "blue",
+      "beige",
+      "red",
+      "green",
+      "yellow",
+      "pink",
+      "purple",
+      "brown",
+      "gray",
+    ],
     price: ["Under $50", "$50-$100", "$100-$200", "Over $200"],
   };
 
@@ -40,60 +66,108 @@ const CategoryPage = () => {
     }));
   };
 
-  // Handle add to cart
-  const handleAddToCart = async (product) => {
-    try {
-      await addToCart({
-        ...product,
-        quantity: 1,
-        price: parseFloat(product.price),
-      }).unwrap();
-      toast.success(`${product.name} added to cart`);
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
-      toast.error("Failed to add to cart");
-    }
-  };
-
   // Apply filters to products
   const filteredProducts = useMemo(() => {
-    if (!products || products.length === 0) return [];
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      console.log("No products available or invalid products array");
+      return [];
+    }
+
+    console.log("All products:", products);
+    console.log("Current filters:", filters);
+
     let result = [...products];
 
     // Apply size filter
-    if (filters.size.length > 0) {
-      result = result.filter((product) =>
-        filters.size.some((size) => product.sizes?.includes(size))
-      );
+    if (filters.size && filters.size.length > 0) {
+      console.log("Filtering by sizes:", filters.size);
+      result = result.filter((product) => {
+        if (!product.sizes || !Array.isArray(product.sizes)) {
+          console.log(
+            `Product ${product.name || product.id} has no sizes array`
+          );
+          return false;
+        }
+        const matches = filters.size.some((size) =>
+          product.sizes
+            .map((s) => s?.toUpperCase())
+            .includes(size?.toUpperCase())
+        );
+        console.log(
+          `Product ${product.name} sizes:`,
+          product.sizes,
+          "matches:",
+          matches
+        );
+        return matches;
+      });
+      console.log("After size filter:", result.length, "products");
     }
 
     // Apply color filter
-    if (filters.color.length > 0) {
-      result = result.filter((product) =>
-        filters.color.some((color) => product.colors?.includes(color))
-      );
+    if (filters.color && filters.color.length > 0) {
+      console.log("Filtering by colors:", filters.color);
+      result = result.filter((product) => {
+        if (!product.colors || !Array.isArray(product.colors)) {
+          console.log(
+            `Product ${product.name || product.id} has no colors array`
+          );
+          return false;
+        }
+        const matches = filters.color.some((color) =>
+          product.colors
+            .map((c) => c?.toLowerCase())
+            .includes(color?.toLowerCase())
+        );
+        console.log(
+          `Product ${product.name} colors:`,
+          product.colors,
+          "matches:",
+          matches
+        );
+        return matches;
+      });
+      console.log("After color filter:", result.length, "products");
     }
 
     // Apply price filter
     if (filters.price) {
-      const priceRange = filters.price
-        .split(" ")[0]
-        .replace(/[^0-9-]/g, "")
-        .split("-")
-        .map((price) =>
-          price === "Under" ? "0" : price === "Over" ? "1000" : price
-        );
+      console.log("Filtering by price:", filters.price);
+      try {
+        const priceRange = filters.price
+          .split(" ")[0]
+          .replace(/[^0-9-]/g, "")
+          .split("-")
+          .map((price) =>
+            price === "Under" ? "0" : price === "Over" ? "1000" : price
+          );
 
-      const minPrice = parseFloat(priceRange[0]);
-      const maxPrice = priceRange[1] ? parseFloat(priceRange[1]) : 1000;
+        const minPrice = parseFloat(priceRange[0]) || 0;
+        const maxPrice = priceRange[1]
+          ? parseFloat(priceRange[1]) || 1000
+          : 1000;
 
-      result = result.filter((product) => {
-        const productPrice = parseFloat(product.price);
-        return (
-          productPrice >= minPrice &&
-          (priceRange[1] ? productPrice <= maxPrice : true)
-        );
-      });
+        result = result.filter((product) => {
+          const productPrice = parseFloat(product.price) || 0;
+          const isInRange =
+            productPrice >= minPrice &&
+            (priceRange[1] ? productPrice <= maxPrice : true);
+
+          console.log(
+            `Product ${product.name} price:`,
+            productPrice,
+            `Range: ${minPrice}-${maxPrice}`,
+            "matches:",
+            isInRange
+          );
+
+          return isInRange;
+        });
+
+        console.log("After price filter:", result.length, "products");
+      } catch (error) {
+        console.error("Error applying price filter:", error);
+      }
     }
 
     return result;
@@ -135,7 +209,7 @@ const CategoryPage = () => {
           transition={{ duration: 0.8 }}
           className="text-center z-10"
         >
-          <h1 className="text-4xl md:text-5xl font-medium mb-4">
+          <h1 className="text-4xl md:text-8xl font-medium mb-4 font-[PPS]">
             New Collection
           </h1>
           <p className="text-gray-600 max-w-xl mx-auto px-4">
@@ -249,7 +323,9 @@ const CategoryPage = () => {
           {/* Products Grid */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-8">
-              <p className="text-gray-600">24 products</p>
+              <p className="text-gray-600">
+                {filteredProducts.length} products
+              </p>
               <select className="border-none bg-transparent focus:ring-0 text-sm">
                 <option>Latest arrivals</option>
                 <option>Price: Low to high</option>
@@ -274,14 +350,14 @@ const CategoryPage = () => {
                         <img
                           src={
                             product.image ||
-                            "https://via.placeholder.com/300x400?text=Product+Image"
+                            "https://placehold.co/300x400/ffffff/000000?text=Product+Image"
                           }
                           alt={product.name}
                           className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src =
-                              "https://via.placeholder.com/300x400?text=Product+Image";
+                              "https://placehold.co/300x400/ffffff/000000?text=Product+Image";
                           }}
                         />
                       </div>
