@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Filter } from "lucide-react";
+import {
+  useGetProductsQuery,
+  useAddToCartMutation,
+} from "../../features/apiSlice";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
 
 const CategoryPage = () => {
+  const { data: products = [], isLoading, isError } = useGetProductsQuery();
   const [filters, setFilters] = useState({
     size: [],
     color: [],
@@ -15,25 +23,7 @@ const CategoryPage = () => {
     setIsClient(true);
   }, []);
 
-  // Mock product data
-  const products = [
-    {
-      id: 1,
-      name: "Classic White Shirt",
-      price: "$89",
-      image: "/images/shirt1.jpg",
-      colors: ["white"],
-      sizes: ["S", "M", "L"],
-    },
-    {
-      id: 2,
-      name: "Relaxed Fit Pants",
-      price: "$120",
-      image: "/images/pant1.jpg",
-      colors: ["black"],
-      sizes: ["M", "L", "XL"],
-    },
-  ];
+  const [addToCart] = useAddToCartMutation();
 
   const filterOptions = {
     size: ["XS", "S", "M", "L", "XL"],
@@ -49,6 +39,86 @@ const CategoryPage = () => {
         : [...prev[type], value],
     }));
   };
+
+  // Handle add to cart
+  const handleAddToCart = async (product) => {
+    try {
+      await addToCart({
+        ...product,
+        quantity: 1,
+        price: parseFloat(product.price),
+      }).unwrap();
+      toast.success(`${product.name} added to cart`);
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+      toast.error("Failed to add to cart");
+    }
+  };
+
+  // Apply filters to products
+  const filteredProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    let result = [...products];
+
+    // Apply size filter
+    if (filters.size.length > 0) {
+      result = result.filter((product) =>
+        filters.size.some((size) => product.sizes?.includes(size))
+      );
+    }
+
+    // Apply color filter
+    if (filters.color.length > 0) {
+      result = result.filter((product) =>
+        filters.color.some((color) => product.colors?.includes(color))
+      );
+    }
+
+    // Apply price filter
+    if (filters.price) {
+      const priceRange = filters.price
+        .split(" ")[0]
+        .replace(/[^0-9-]/g, "")
+        .split("-")
+        .map((price) =>
+          price === "Under" ? "0" : price === "Over" ? "1000" : price
+        );
+
+      const minPrice = parseFloat(priceRange[0]);
+      const maxPrice = priceRange[1] ? parseFloat(priceRange[1]) : 1000;
+
+      result = result.filter((product) => {
+        const productPrice = parseFloat(product.price);
+        return (
+          productPrice >= minPrice &&
+          (priceRange[1] ? productPrice <= maxPrice : true)
+        );
+      });
+    }
+
+    return result;
+  }, [products, filters]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-red-600 mb-2">
+            Error loading products
+          </h2>
+          <p className="text-gray-600">Please try again later</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -187,24 +257,64 @@ const CategoryPage = () => {
               </select>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-              {products.map((product, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: index * 0.07 }}
                 >
-                  <div className="group">
-                    <div className="aspect-square overflow-hidden bg-gray-100 mb-4">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                  <div className="relative bg-white rounded-xl overflow-hidden shadow-md group hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-indigo-200">
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="block focus:outline-none"
+                    >
+                      <div className="w-full aspect-[3/4] bg-gray-100 overflow-hidden">
+                        <img
+                          src={
+                            product.image ||
+                            "https://via.placeholder.com/300x400?text=Product+Image"
+                          }
+                          alt={product.name}
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              "https://via.placeholder.com/300x400?text=Product+Image";
+                          }}
+                        />
+                      </div>
+                    </Link>
+                    <div className="p-4 flex flex-col gap-2">
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="hover:text-indigo-600 transition-colors"
+                      >
+                        <h3 className="text-lg font-semibold truncate mb-1">
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-gray-900">
+                          ${parseFloat(product.price).toFixed(2)}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ${parseFloat(product.originalPrice).toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="mt-2 flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium shadow transition-all duration-300 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 focus:opacity-100 focus:translate-y-0"
+                        tabIndex={0}
+                      >
+                        <FaShoppingCart />
+                        Add to Cart
+                      </button>
                     </div>
-                    <h3 className="text-lg mb-2">{product.name}</h3>
-                    <p className="text-gray-600">{product.price}</p>
+                    <div className="absolute inset-0 pointer-events-none rounded-xl ring-2 ring-indigo-500 ring-opacity-0 group-hover:ring-opacity-10 transition-all duration-300"></div>
                   </div>
                 </motion.div>
               ))}

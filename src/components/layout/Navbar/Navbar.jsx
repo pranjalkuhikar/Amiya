@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { useGetCartQuery } from "../../../features/apiSlice";
 import "./Navbar.scss";
 
 const Navbar = () => {
@@ -8,6 +9,10 @@ const Navbar = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const navRef = useRef(null);
+
+  // Get cart data using RTK Query
+  const { data: cartData } = useGetCartQuery();
+  const cartItems = cartData || [];
 
   useEffect(() => {
     // Add/remove home-page class to body based on route
@@ -58,28 +63,38 @@ const Navbar = () => {
           <Link to="/contact">Contact</Link>
         </div>
         <div className="btn desktop-menu">
-          <Link to="/cart" className="cart">
-            <svg
-              className="icon-cart"
-              width="15"
-              height="18"
-              viewBox="0 0 15 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
-                stroke="currentColor"
-                strokeWidth="0.983866"
-              ></path>
-              <path
-                d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
-                stroke="currentColor"
-                strokeWidth="0.983866"
-                strokeLinecap="round"
-              ></path>
-            </svg>
-          </Link>
+          <div className="relative">
+            <Link to="/cart" className="text-gray-700 hover:text-gray-900">
+              <svg
+                className="icon-cart"
+                width="15"
+                height="18"
+                viewBox="0 0 15 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
+                  stroke="currentColor"
+                  strokeWidth="0.983866"
+                />
+                <path
+                  d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
+                  stroke="currentColor"
+                  strokeWidth="0.983866"
+                  strokeLinecap="round"
+                />
+              </svg>
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItems.reduce(
+                    (acc, item) => acc + (item.quantity || 1),
+                    0
+                  )}
+                </span>
+              )}
+            </Link>
+          </div>
           <div className="line"></div>
           <Link to="/login" className="account">
             <svg
@@ -96,14 +111,14 @@ const Navbar = () => {
                 strokeWidth="0.983866"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              ></path>
+              />
               <path
                 d="M8.02798 8.30986C9.95997 8.30986 11.5262 6.74367 11.5262 4.81167C11.5262 2.87967 9.95997 1.31348 8.02798 1.31348C6.09598 1.31348 4.52979 2.87967 4.52979 4.81167C4.52979 6.74367 6.09598 8.30986 8.02798 8.30986Z"
                 stroke="currentColor"
                 strokeWidth="0.983866"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              ></path>
+              />
             </svg>
           </Link>
         </div>
@@ -124,33 +139,43 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="btn" style={{ "--i": 5 }}>
-            <Link
-              to="/cart"
-              className="cart"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Cart"
-            >
-              <svg
-                className="icon-cart"
-                width="20"
-                height="20"
-                viewBox="0 0 15 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="relative">
+              <Link
+                to="/cart"
+                className="cart"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Cart"
               >
-                <path
-                  d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                />
-                <path
-                  d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </Link>
+                <svg
+                  className="icon-cart"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 15 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+                  {cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartItems.reduce(
+                        (acc, item) => acc + (item.quantity || 1),
+                        0
+                      )}
+                    </span>
+                  )}
+                </svg>
+              </Link>
+            </div>
             <div className="line"></div>
             <Link
               to="/login"
