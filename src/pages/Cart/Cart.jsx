@@ -108,6 +108,16 @@ const Cart = () => {
                             <p className="cart-item-category">
                               {product.category}
                             </p>
+                            {product.selectedSize && (
+                              <p className="cart-item-size font-[PPR]">
+                                Size: {product.selectedSize}
+                              </p>
+                            )}
+                            {product.selectedColor && (
+                              <p className="cart-item-color font-[PPR]">
+                                Color: {product.selectedColor}
+                              </p>
+                            )}
                             <p className="cart-item-price">₹{product.price}</p>
                           </div>
 

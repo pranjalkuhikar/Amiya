@@ -181,8 +181,11 @@
   justify-content: space-between;
 }
 
-.cart-item-name {
-  font-size: 0.875rem; /* text-sm */
+.cart-item-name,
+.cart-item-size,
+.cart-item-color {
+  font-size: 0.875rem;
+  color: #4a5568; /* text-sm */
 }
 
 .cart-item-link {
