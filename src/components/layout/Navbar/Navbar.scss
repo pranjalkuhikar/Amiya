@@ -78,15 +78,65 @@ nav {
     display: flex;
   }
 
+  .nav-btn-group {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 9999px;
+    padding: 0.2em 0.4em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    gap: 0;
+  }
+  .nav-btn-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 1.2em;
+    height: 48px;
+    cursor: pointer;
+    color: #222;
+    font-size: 1.2rem;
+    position: relative;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .nav-btn-divider {
+    width: 1px;
+    height: 28px;
+    background: #bbb;
+    margin: 0 0.2em;
+    display: block;
+  }
+  .nav-btn-group .icon-cart,
+  .nav-btn-group .icon-account {
+    display: block;
+    margin: 0;
+  }
+
   .mobile-menu {
     display: none;
+  }
+
+  .right-side-nav-items {
+    display: none;
+    align-items: center;
+    gap: 1em;
   }
 
   @media (max-width: 1024px) {
     font-size: clamp(1rem, 5vw, 1.5rem);
     width: 100%;
     padding: 1em 5em;
-
+    .nav-btn-group {
+      padding: 0.1em 0.1em;
+      margin-left: auto;
+      margin-right: 0;
+      align-items: center;
+      justify-content: flex-end;
+    }
     body.home-page & {
       background: transparent;
       color: #fff;
@@ -115,6 +165,18 @@ nav {
       z-index: 1100;
     }
 
+    .right-side-nav-items {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+      width: 100%;
+    }
     .mobile-menu {
       display: flex;
       flex-direction: column;
@@ -133,10 +195,12 @@ nav {
       justify-content: center;
       font-size: 1.5rem;
       z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(20px);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      & {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
 
       body.home-page & {
         background: transparent;
@@ -219,6 +283,7 @@ nav {
     color: inherit;
     font-family: "PPR";
     font-size: 1.5em;
+    font-weight: 500;
   }
 
   .menu {
@@ -279,5 +344,14 @@ nav {
     position: relative;
     display: inline-block;
     padding: 0.5em 0;
+  }
+}
+
+@media (max-width: 520px) {
+  nav {
+    .logo {
+      margin-left: -2.6em;
+      padding-right: 3em;
+    }
   }
 }

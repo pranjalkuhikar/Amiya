@@ -66,11 +66,11 @@ const Navbar = () => {
               duration: isCartUpdated ? 0.4 : 0.2,
               times: isCartUpdated ? [0, 0.5, 1] : [0, 1],
             }}
-            className="absolute -top-2 -right-2 flex items-center justify-center rounded-full text-white text-xs font-medium"
+            className="absolute top-0 right-2 flex items-center justify-center rounded-full text-white text-xs font-medium"
             style={{
               minWidth: "20px",
               height: "20px",
-              padding: cartCount > 9 ? "0 6px" : "0",
+              padding: cartCount > 9 ? "0 2px" : "0",
             }}
           >
             {cartCount}
@@ -86,49 +86,38 @@ const Navbar = () => {
         <Link to="/" className="logo">
           Amiya
         </Link>
-        <button
-          className="hamburger"
-          aria-label="Open menu"
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          <span className={menuOpen ? "open" : ""}></span>
-          <span className={menuOpen ? "open" : ""}></span>
-          <span className={menuOpen ? "open" : ""}></span>
-        </button>
         <div className="menu desktop-menu">
           <Link to="/">Home</Link>
           <Link to="/shop">Shop</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
         </div>
-        <div className="btn desktop-menu">
-          <div className="relative">
-            <Link to="/cart" className="text-gray-700 hover:text-gray-900">
-              <svg
-                className="icon-cart"
-                width="15"
-                height="18"
-                viewBox="0 0 15 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
-                  stroke="currentColor"
-                  strokeWidth="0.983866"
-                />
-                <path
-                  d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
-                  stroke="currentColor"
-                  strokeWidth="0.983866"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <CartCounter />
-            </Link>
-          </div>
-          <div className="line"></div>
-          <Link to="/sign-in" className="account">
+        <div className="nav-btn-group">
+          <Link to="/cart" className="nav-btn-item">
+            <svg
+              className="icon-cart"
+              width="15"
+              height="18"
+              viewBox="0 0 15 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
+                stroke="currentColor"
+                strokeWidth="0.983866"
+              />
+              <path
+                d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
+                stroke="currentColor"
+                strokeWidth="0.983866"
+                strokeLinecap="round"
+              />
+            </svg>
+            <CartCounter />
+          </Link>
+          <span className="nav-btn-divider"></span>
+          <Link to="/sign-in" className="nav-btn-item">
             <svg
               className="icon-account"
               width="16"
@@ -154,86 +143,35 @@ const Navbar = () => {
             </svg>
           </Link>
         </div>
+
+        <div className="right-side-nav-items">
+          <button
+            className="hamburger"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <span className={menuOpen ? "open" : ""}></span>
+            <span className={menuOpen ? "open" : ""}></span>
+            <span className={menuOpen ? "open" : ""}></span>
+          </button>
+        </div>
         <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
-          {[
-            { to: "/", text: "Home" },
-            { to: "/shop", text: "Shop" },
-            { to: "/about", text: "About" },
-            { to: "/contact", text: "Contact" },
-          ].map((item, index) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={() => setMenuOpen(false)}
-              style={{ "--i": index + 1 }}
-            >
-              {item.text}
-            </Link>
-          ))}
-          <div className="btn" style={{ "--i": 5 }}>
-            <div className="relative">
+          <div className="mobile-nav-links">
+            {[
+              { to: "/", text: "Home" },
+              { to: "/shop", text: "Shop" },
+              { to: "/about", text: "About" },
+              { to: "/contact", text: "Contact" },
+            ].map((item, index) => (
               <Link
-                to="/cart"
-                className="cart"
+                key={item.to}
+                to={item.to}
                 onClick={() => setMenuOpen(false)}
-                aria-label="Cart"
+                style={{ "--i": index + 1 }}
               >
-                <svg
-                  className="icon-cart"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 15 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1.19891 5.8049C1.2448 5.02484 1.89076 4.41576 2.67216 4.41576H12.0298C12.8112 4.41576 13.4572 5.02485 13.5031 5.8049L14.0884 15.7547C14.1382 16.6023 13.4643 17.3171 12.6151 17.3171H2.08688C1.23775 17.3171 0.563767 16.6023 0.61363 15.7547L1.19891 5.8049Z"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  />
-                  <path
-                    d="M11.4354 6.3737C11.4354 3.21604 9.60694 0.65625 7.35147 0.65625C5.096 0.65625 3.26758 3.21604 3.26758 6.3737"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <CartCounter />
+                {item.text}
               </Link>
-            </div>
-            <div className="line"></div>
-            <div className="relative">
-              <Link
-                to="/sign-in"
-                className="account"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Account"
-              >
-                <svg
-                  className="icon-account"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 16 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.024 17.0559V15.3068C15.024 14.379 14.6555 13.4892 13.9994 12.8332C13.3434 12.1772 12.4536 11.8086 11.5258 11.8086H4.52944C3.60166 11.8086 2.71188 12.1772 2.05585 12.8332C1.39981 13.4892 1.03125 14.379 1.03125 15.3068V17.0559"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8.02798 8.30986C9.95997 8.30986 11.5262 6.74367 11.5262 4.81167C11.5262 2.87967 9.95997 1.31348 8.02798 1.31348C6.09598 1.31348 4.52979 2.87967 4.52979 4.81167C4.52979 6.74367 6.09598 8.30986 8.02798 8.30986Z"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
       </nav>
