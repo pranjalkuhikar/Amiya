@@ -7,7 +7,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-16 footer">
-      <div className="min-h-screen flex flex-col justify-between">
+      <div className="flex min-h-[80vh] flex-col justify-between">
         {/* Top Section */}
         <div className="part-1 flex flex-col md:flex-row justify-between items-center border-y border-gray-400 p-8 md:px-16">
           <h2 className="text-4xl md:text-7xl font-[PPS] text-center md:text-left mb-4 md:mb-0">
