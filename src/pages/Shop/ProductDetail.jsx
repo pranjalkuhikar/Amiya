@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../features/cartSlice";
 
-
 const ProductDetail = () => {
   const { id } = useParams();
   const { data: product, isLoading, isError } = useGetProductByIdQuery(id);
@@ -19,10 +18,9 @@ const ProductDetail = () => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const addButtonRef = useRef(null);
-  
+
   // Use Redux instead of Context API
   const dispatch = useDispatch();
-  const isDarkMode = useSelector(selectIsDarkMode);
 
   // Reset selections when product changes
   useEffect(() => {
@@ -46,26 +44,28 @@ const ProductDetail = () => {
     }
 
     // Add to cart using Redux
-    dispatch(addToCart({
-      product,
-      selectedSize,
-      selectedColor,
-      quantity
-    }));
-    
+    dispatch(
+      addToCart({
+        product,
+        selectedSize,
+        selectedColor,
+        quantity,
+      })
+    );
+
     // Show success animation
     setIsAddedToCart(true);
     setTimeout(() => setIsAddedToCart(false), 2000);
   };
 
   const handleQuantityChange = (change) => {
-    setQuantity(prev => Math.max(1, prev + change));
+    setQuantity((prev) => Math.max(1, prev + change));
   };
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen dark:bg-gray-900">
-        <motion.div 
+        <motion.div
           className="w-16 h-16 border-t-4 border-indigo-600 border-solid rounded-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -73,10 +73,10 @@ const ProductDetail = () => {
       </div>
     );
   }
-  
+
   if (isError || !product) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="flex justify-center items-center min-h-screen text-red-600 dark:text-red-400 dark:bg-gray-900"
@@ -87,63 +87,65 @@ const ProductDetail = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 dark:text-gray-100"
     >
-      <Link 
-        to="/shop" 
+      <Link
+        to="/shop"
         className="inline-flex items-center text-gray-600 dark:text-gray-300 mb-8 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
       >
         <motion.div whileHover={{ x: -5 }} whileTap={{ scale: 0.95 }}>
           <FaArrowLeft className="mr-2" /> Back to Shop
         </motion.div>
       </Link>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Images Section */}
         <div className="space-y-6">
           {/* Main product image with zoom effect */}
-          <motion.div 
+          <motion.div
             className="relative overflow-hidden bg-gray-50 dark:bg-gray-800 rounded-2xl aspect-square"
             whileHover={{ scale: isImageZoomed ? 1 : 1.02 }}
             transition={{ duration: 0.3 }}
             style={{
-              boxShadow: isDarkMode 
-                ? '0 10px 30px -10px rgba(0, 0, 0, 0.5)' 
-                : '0 10px 30px -10px rgba(0, 0, 0, 0.1)'
+              boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.1)",
             }}
           >
             <motion.img
-              src={product.images && product.images.length > 0
-                ? product.images[currentImageIndex]
-                : (product.image || "https://placehold.co/600x600/ffffff/000000?text=Product+Image")}
+              src={
+                product.images && product.images.length > 0
+                  ? product.images[currentImageIndex]
+                  : product.image ||
+                    "https://placehold.co/600x600/ffffff/000000?text=Product+Image"
+              }
               alt={product.name}
               className={`w-full h-full object-cover transition-all duration-500 ${
                 isImageZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
               }`}
               onClick={() => setIsImageZoomed(!isImageZoomed)}
-              style={{ 
-                objectPosition: isImageZoomed ? "center center" : "center" 
+              style={{
+                objectPosition: isImageZoomed ? "center center" : "center",
               }}
               layoutId={`product-image-${product.id}`}
             />
-            
+
             {/* 3D-like hover effect overlay */}
-            <div 
+            <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)',
-                opacity: isDarkMode ? 0.05 : 0.2
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)",
+                opacity: 0.2,
               }}
             ></div>
           </motion.div>
-          
+
           {/* Thumbnail images */}
           {product.images && product.images.length > 1 && (
-            <motion.div 
+            <motion.div
               className="grid grid-cols-5 gap-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -154,9 +156,9 @@ const ProductDetail = () => {
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
                   className={`aspect-square overflow-hidden rounded-xl ${
-                    currentImageIndex === index 
-                      ? 'ring-2 ring-indigo-600 dark:ring-indigo-400' 
-                      : 'ring-1 ring-gray-200 dark:ring-gray-700 hover:ring-indigo-300 dark:hover:ring-indigo-500'
+                    currentImageIndex === index
+                      ? "ring-2 ring-indigo-600 dark:ring-indigo-400"
+                      : "ring-1 ring-gray-200 dark:ring-gray-700 hover:ring-indigo-300 dark:hover:ring-indigo-500"
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -171,9 +173,9 @@ const ProductDetail = () => {
             </motion.div>
           )}
         </div>
-        
+
         {/* Product Info Section */}
-        <motion.div 
+        <motion.div
           className="flex flex-col space-y-6"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -181,7 +183,7 @@ const ProductDetail = () => {
         >
           {/* Product title and price */}
           <div>
-            <motion.h1 
+            <motion.h1
               className="text-3xl sm:text-4xl font-light mb-4 font-[PPMori]"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -189,57 +191,75 @@ const ProductDetail = () => {
             >
               {product.name}
             </motion.h1>
-            
-            <motion.div 
+
+            <motion.div
               className="flex items-center gap-3 mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="text-2xl font-[PPMori]">${parseFloat(product.price).toFixed(2)}</span>
+              <span className="text-2xl font-[PPMori]">
+                ${parseFloat(product.price).toFixed(2)}
+              </span>
               {product.originalPrice && (
-                <span className="text-lg text-gray-500 dark:text-gray-400 line-through">${parseFloat(product.originalPrice).toFixed(2)}</span>
+                <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
+                  ${parseFloat(product.originalPrice).toFixed(2)}
+                </span>
               )}
               {product.available ? (
-                <span className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium px-3 py-1 rounded-full ml-2">In Stock</span>
+                <span className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium px-3 py-1 rounded-full ml-2">
+                  In Stock
+                </span>
               ) : (
-                <span className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-medium px-3 py-1 rounded-full ml-2">Out of Stock</span>
+                <span className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-medium px-3 py-1 rounded-full ml-2">
+                  Out of Stock
+                </span>
               )}
             </motion.div>
           </div>
-          
+
           {/* Product description with expand/collapse */}
           {product.description && (
-            <motion.div 
+            <motion.div
               className="mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className={`prose prose-gray dark:prose-invert max-w-none overflow-hidden ${!isDescriptionExpanded ? 'max-h-32' : ''}`}>
-                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+              <div
+                className={`prose prose-gray dark:prose-invert max-w-none overflow-hidden ${
+                  !isDescriptionExpanded ? "max-h-32" : ""
+                }`}
+              >
+                <div
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
               </div>
               {product.description.length > 150 && (
-                <button 
-                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                <button
+                  onClick={() =>
+                    setIsDescriptionExpanded(!isDescriptionExpanded)
+                  }
                   className="text-indigo-600 dark:text-indigo-400 text-sm font-medium mt-2 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
                 >
-                  {isDescriptionExpanded ? 'Show less' : 'Read more'}
+                  {isDescriptionExpanded ? "Show less" : "Read more"}
                 </button>
               )}
             </motion.div>
           )}
-          
+
           <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
             {/* Size selection */}
             {product.sizes && product.sizes.length > 0 && (
-              <motion.div 
+              <motion.div
                 className="mb-6"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 }}
               >
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Size</h3>
+                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+                  Size
+                </h3>
                 <div className="flex flex-wrap gap-3">
                   {product.sizes.map((size) => (
                     <motion.button
@@ -259,16 +279,18 @@ const ProductDetail = () => {
                 </div>
               </motion.div>
             )}
-            
+
             {/* Color selection */}
             {product.colors && product.colors.length > 0 && (
-              <motion.div 
+              <motion.div
                 className="mb-6"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.5 }}
               >
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Color</h3>
+                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+                  Color
+                </h3>
                 <div className="flex flex-wrap gap-3">
                   {product.colors.map((color) => (
                     <motion.button
@@ -287,7 +309,7 @@ const ProductDetail = () => {
                   ))}
                 </div>
                 {selectedColor && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-2 text-sm text-gray-600 dark:text-gray-400"
@@ -297,17 +319,19 @@ const ProductDetail = () => {
                 )}
               </motion.div>
             )}
-            
+
             {/* Quantity selector */}
-            <motion.div 
+            <motion.div
               className="mb-8"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.6 }}
             >
-              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Quantity</h3>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+                Quantity
+              </h3>
               <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md w-32">
-                <motion.button 
+                <motion.button
                   onClick={() => handleQuantityChange(-1)}
                   className="px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 disabled:text-gray-300 dark:disabled:text-gray-600"
                   disabled={quantity <= 1}
@@ -316,7 +340,7 @@ const ProductDetail = () => {
                   -
                 </motion.button>
                 <span className="flex-1 text-center py-1">{quantity}</span>
-                <motion.button 
+                <motion.button
                   onClick={() => handleQuantityChange(1)}
                   className="px-3 py-1 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
                   whileTap={{ scale: 0.9 }}
@@ -325,9 +349,9 @@ const ProductDetail = () => {
                 </motion.button>
               </div>
             </motion.div>
-            
+
             {/* Action buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -345,7 +369,9 @@ const ProductDetail = () => {
                 whileHover={product.available ? { scale: 1.02 } : {}}
                 whileTap={product.available ? { scale: 0.98 } : {}}
                 style={{
-                  boxShadow: product.available ? (isDarkMode ? '0 8px 20px -8px rgba(79, 70, 229, 0.5)' : '0 8px 20px -8px rgba(79, 70, 229, 0.3)') : 'none'
+                  boxShadow: product.available
+                    ? "0 8px 20px -8px rgba(79, 70, 229, 0.3)"
+                    : "none",
                 }}
               >
                 {isAddedToCart ? (
@@ -364,16 +390,17 @@ const ProductDetail = () => {
                         Added to Cart
                       </motion.div>
                     </motion.div>
-                    
+
                     {/* Ripple effect */}
                     <motion.div
                       className="absolute inset-0 pointer-events-none"
                       initial={{ scale: 0, opacity: 0.8 }}
                       animate={{ scale: 2, opacity: 0 }}
                       transition={{ duration: 1 }}
-                      style={{ 
-                        borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)'
+                      style={{
+                        borderRadius: "50%",
+                        background:
+                          "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
                       }}
                     />
                   </>
@@ -384,7 +411,7 @@ const ProductDetail = () => {
                   </>
                 )}
               </motion.button>
-              
+
               <motion.button
                 className="flex items-center justify-center gap-2 py-3 px-6 rounded-full font-medium border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-indigo-600 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
                 whileHover={{ scale: 1.02 }}
@@ -395,10 +422,10 @@ const ProductDetail = () => {
               </motion.button>
             </motion.div>
           </div>
-          
+
           {/* Product details accordion */}
           <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
-            <motion.div 
+            <motion.div
               className="space-y-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -406,20 +433,22 @@ const ProductDetail = () => {
             >
               <ProductAccordion title="Shipping & Returns">
                 <p className="text-gray-600 dark:text-gray-400">
-                  Free shipping on all orders over $50. Returns accepted within 30 days of delivery.
+                  Free shipping on all orders over $50. Returns accepted within
+                  30 days of delivery.
                 </p>
               </ProductAccordion>
-              
+
               <ProductAccordion title="Materials & Care">
                 <p className="text-gray-600 dark:text-gray-400">
-                  Please refer to the product description for material details. Follow care instructions on the label.
+                  Please refer to the product description for material details.
+                  Follow care instructions on the label.
                 </p>
               </ProductAccordion>
             </motion.div>
           </div>
         </motion.div>
       </div>
-      
+
       {/* Related products section could be added here */}
     </motion.div>
   );
@@ -428,16 +457,15 @@ const ProductDetail = () => {
 // Accordion component for product details
 const ProductAccordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const isDarkMode = useSelector(selectIsDarkMode);
-  
+
   return (
     <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-      <button 
+      <button
         className="flex justify-between items-center w-full py-2 text-left font-medium text-gray-900 dark:text-gray-100"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{title}</span>
-        <span className="text-lg">{isOpen ? '−' : '+'}</span>
+        <span className="text-lg">{isOpen ? "−" : "+"}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -448,9 +476,7 @@ const ProductAccordion = ({ title, children }) => {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="pt-2 pb-1">
-              {children}
-            </div>
+            <div className="pt-2 pb-1">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
