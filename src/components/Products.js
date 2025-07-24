@@ -1,24 +1,14 @@
 import React from "react";
-import {
-  useGetProductsQuery,
-  useAddToCartMutation,
-} from "../features/apiSlice";
+import { useGetProductsQuery } from "../features/apiSlice";
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../features/cartSlice';
 
 const Products = () => {
   const { data: products, isLoading, isError } = useGetProductsQuery();
-  const [addToCart] = useAddToCartMutation();
+  const dispatch = useDispatch();
 
-  const handleAddToCart = async (product) => {
-    try {
-      await addToCart({
-        ...product,
-        quantity: 1,
-      }).unwrap();
-      alert("Added to cart successfully!");
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
-      alert("Failed to add to cart");
-    }
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ product, quantity: 1 }));
   };
 
   if (isLoading)
