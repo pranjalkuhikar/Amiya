@@ -83,11 +83,9 @@ nav {
   }
 
   @media (max-width: 1024px) {
-    justify-content: space-between;
-    gap: 10em;
-    margin-left: -50px;
     font-size: clamp(1rem, 5vw, 1.5rem);
     width: 100%;
+    padding: 1em 5em;
 
     body.home-page & {
       background: transparent;
@@ -99,7 +97,7 @@ nav {
       // Scrolled state for home page
       &.scrolled {
         background: transparent !important;
-        color: #fff !important;
+        color: #ffffff !important;
         border-radius: 0;
         padding: 1em 5em;
       }
@@ -126,7 +124,8 @@ nav {
       left: 0;
       bottom: 0;
       font-family: "PPR";
-      background: white;
+      background: #fff;
+      color: #000;
       backdrop-filter: blur(10px);
       padding: 5rem 2rem 2rem;
       gap: 1.5rem;
@@ -136,11 +135,16 @@ nav {
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(-20px);
+      transform: translateY(20px);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
+      body.home-page & {
+        background: transparent;
+        color: #fff;
+      }
+
       a {
-        color: #000;
+        color: inherit;
         font-weight: 500;
         width: 50%;
         text-align: center;
@@ -157,7 +161,7 @@ nav {
           bottom: 0;
           left: 50%;
           transform: translateX(-50%);
-          background-color: #000;
+          background-color: currentColor;
           transition: width 0.3s ease;
         }
 
