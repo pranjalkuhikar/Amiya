@@ -415,7 +415,7 @@ const CategoryPage = () => {
           </AnimatePresence>
 
           {/* Products Grid */}
-          <div className="flex-1 overflow-hidden space-y-10">
+          <div className="flex-1 products overflow-hidden space-y-10">
             <div className="latest p-10 flex justify-between items-center mb-20 mt-20">
               <motion.p
                 className="text-gray-900 font-[PPR] font-light"
