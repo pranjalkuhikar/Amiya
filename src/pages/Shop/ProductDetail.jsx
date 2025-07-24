@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../features/cartSlice";
-import { selectIsDarkMode } from "../../features/themeSlice";
+
 
 const ProductDetail = () => {
   const { id } = useParams();

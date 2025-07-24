@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartCount } from "../../../features/cartSlice";
-import { selectIsDarkMode, toggleTheme } from "../../../features/themeSlice";
+
 import { motion, AnimatePresence } from "framer-motion";
 import "./Navbar.scss";
 
@@ -16,7 +16,6 @@ const Navbar = () => {
 
   // Use Redux instead of Context API
   const cartCount = useSelector(selectCartCount);
-  const isDarkMode = useSelector(selectIsDarkMode);
 
   useEffect(() => {
     // Add/remove home-page class to body based on route
@@ -45,36 +44,33 @@ const Navbar = () => {
     };
   }, [isHome]);
 
-  // Toggle dark mode using Redux
-  const handleToggleTheme = () => {
-    dispatch(toggleTheme());
-  };
-
   // Cart counter component with animation
   const CartCounter = () => {
-    const isCartUpdated = useSelector(state => state.cart.isCartUpdated);
-    
+    const isCartUpdated = useSelector((state) => state.cart.isCartUpdated);
+
     return (
       <AnimatePresence>
         {cartCount > 0 && (
           <motion.div
             key="cart-count"
             initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ 
-              scale: isCartUpdated ? [1, 1.2, 1] : 1, 
+            animate={{
+              scale: isCartUpdated ? [1, 1.2, 1] : 1,
               opacity: 1,
-              backgroundColor: isCartUpdated ? ['#4F46E5', '#EF4444', '#4F46E5'] : '#EF4444'
+              backgroundColor: isCartUpdated
+                ? ["#4F46E5", "#EF4444", "#4F46E5"]
+                : "#EF4444",
             }}
             exit={{ scale: 0.6, opacity: 0 }}
-            transition={{ 
+            transition={{
               duration: isCartUpdated ? 0.4 : 0.2,
-              times: isCartUpdated ? [0, 0.5, 1] : [0, 1]
+              times: isCartUpdated ? [0, 0.5, 1] : [0, 1],
             }}
             className="absolute -top-2 -right-2 flex items-center justify-center rounded-full text-white text-xs font-medium"
-            style={{ 
-              minWidth: '20px', 
-              height: '20px',
-              padding: cartCount > 9 ? '0 6px' : '0'
+            style={{
+              minWidth: "20px",
+              height: "20px",
+              padding: cartCount > 9 ? "0 6px" : "0",
             }}
           >
             {cartCount}
@@ -86,7 +82,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav ref={navRef} className={`${scrolled ? "scrolled" : ""} ${isDarkMode ? "dark-mode" : ""}`}>
+      <nav ref={navRef} className={`${scrolled ? "scrolled" : ""}`}>
         <Link to="/" className="logo">
           Amiya
         </Link>
@@ -106,34 +102,8 @@ const Navbar = () => {
           <Link to="/contact">Contact</Link>
         </div>
         <div className="btn desktop-menu">
-          {/* Dark mode toggle */}
-          <motion.button
-            onClick={handleToggleTheme}
-            className="mr-4 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-            whileHover={{ scale: 1.1, rotate: 15 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isDarkMode ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            )}
-          </motion.button>
-          
           <div className="relative">
-            <Link to="/cart" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+            <Link to="/cart" className="text-gray-700 hover:text-gray-900">
               <svg
                 className="icon-cart"
                 width="15"
@@ -262,38 +232,6 @@ const Navbar = () => {
                 />
               </svg>
             </Link>
-          </div>
-          
-          {/* Dark mode toggle in mobile menu */}
-          <div className="mt-4" style={{ "--i": 6 }}>
-            <button
-              onClick={handleToggleTheme}
-              className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
-            >
-              {isDarkMode ? (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                  </svg>
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                  </svg>
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
       </nav>

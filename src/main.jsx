@@ -9,10 +9,9 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { initializeTheme } from "./features/themeSlice";
 
-// Initialize theme
-store.dispatch(initializeTheme());
+
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
