@@ -73,7 +73,7 @@ const CheckoutPage = () => {
                     <div className="item-details">
                       <h3>{item.name}</h3>
                       <p>Quantity: {item.quantity}</p>
-                      <p>Price: ${item.price.toFixed(2)}</p>
+                      <p>Price: ₹{item.price.toFixed(2)}</p>
                       {item.selectedSize && <p>Size: {item.selectedSize}</p>}
                       {item.selectedColor && <p>Color: {item.selectedColor}</p>}
                     </div>
@@ -81,9 +81,9 @@ const CheckoutPage = () => {
                 ))}
               </ul>
               <div className="order-total">
-                <p>Subtotal: ${cartTotal.toFixed(2)}</p>
-                <p>Shipping: $0.00</p>
-                <h3>Total: ${cartTotal.toFixed(2)}</h3>
+                <p>Subtotal: ₹{cartTotal.toFixed(2)}</p>
+                <p>Shipping: ₹0.00</p>
+                <h3>Total: ₹{cartTotal.toFixed(2)}</h3>
               </div>
               <button className="place-order-button" onClick={handlePlaceOrder}>
                 Place Order

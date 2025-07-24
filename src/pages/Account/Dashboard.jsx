@@ -28,26 +28,26 @@ const Dashboard = () => {
         id: "#1234",
         date: "2023-07-20",
         status: "Delivered",
-        total: "$209.00",
+        total: "₹209.00",
       },
       {
         id: "#1235",
         date: "2023-07-15",
         status: "In Transit",
-        total: "$159.00",
+        total: "₹159.00",
       },
     ],
     recentlyViewed: [
       {
         id: 1,
         name: "Classic White Shirt",
-        price: "$89",
+        price: "₹89",
         image: "/images/shirt1.jpg",
       },
       {
         id: 2,
         name: "Relaxed Fit Pants",
-        price: "$120",
+        price: "₹120",
         image: "/images/pant1.jpg",
       },
     ],
@@ -117,7 +117,7 @@ const Dashboard = () => {
               {[
                 { label: "Total Orders", value: "12" },
                 { label: "Wishlist Items", value: "8" },
-                { label: "Total Spent", value: "$1,234" },
+                { label: "Total Spent", value: "₹1,234" },
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}

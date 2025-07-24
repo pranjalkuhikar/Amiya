@@ -1,10 +1,9 @@
-import React from "react";
-import ProductCategory from "./ProductCategory";
+import CategoryPage from "./categorypage";
 
 const Shop = () => {
   return (
     <div className="min-h-screen">
-      <ProductCategory />
+      <CategoryPage />
     </div>
   );
 };

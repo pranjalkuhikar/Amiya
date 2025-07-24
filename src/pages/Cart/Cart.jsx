@@ -24,7 +24,7 @@ const Cart = () => {
     (acc, item) => acc + parseFloat(item.price) * (item.quantity || 1),
     0
   );
-  const shipping = subtotal > 0 ? 10 : 0; // $10 shipping fee
+  const shipping = subtotal > 0 ? 10 : 0; // ₹10 shipping fee
   const total = subtotal + shipping;
 
   return (
@@ -79,7 +79,7 @@ const Cart = () => {
                       <div className="cart-item-image-wrapper">
                         <img
                           src={
-                            product.image || "https://via.placeholder.com/150"
+                            product.image
                           }
                           alt={product.name}
                           className="cart-item-image"
@@ -103,7 +103,7 @@ const Cart = () => {
                               {product.category}
                             </p>
                             <p className="cart-item-price">
-                              ${product.price}
+                              ₹{product.price}
                             </p>
                           </div>
 
@@ -196,7 +196,7 @@ const Cart = () => {
                   <div className="order-summary-item">
                     <dt className="order-summary-label">Subtotal</dt>
                     <dd className="order-summary-value">
-                      ${subtotal.toFixed(2)}
+                      ₹{subtotal.toFixed(2)}
                     </dd>
                   </div>
                   <div className="order-summary-item border-top">
@@ -204,13 +204,13 @@ const Cart = () => {
                       <span>Shipping estimate</span>
                     </dt>
                     <dd className="order-summary-value">
-                      ${shipping.toFixed(2)}
+                      ₹{shipping.toFixed(2)}
                     </dd>
                   </div>
                   <div className="order-summary-item border-top">
 <dt className="order-total-label">Order total</dt>
                     <dd className="order-total-value">
-                      ${total.toFixed(2)}
+                      ₹{total.toFixed(2)}
                     </dd>
                   </div>
                 </dl>

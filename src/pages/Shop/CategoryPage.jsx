@@ -3,10 +3,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Filter } from "lucide-react";
 import { useGetProductsQuery } from "../../features/apiSlice";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { FaShoppingCart, FaHeart, FaCheck } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../features/cartSlice";
+import { addToCart, selectCartItems } from "../../features/cartSlice";
 import "./CategoryPage.scss";
 
 const CategoryPage = () => {
@@ -29,6 +28,7 @@ const CategoryPage = () => {
 
   // Use Redux instead of Context API
   const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
 
   useEffect(() => {
     setIsClient(true);
@@ -76,7 +76,7 @@ const CategoryPage = () => {
       "brown",
       "gray",
     ],
-    price: ["Under $50", "$50-$100", "$100-$200", "Over $200"],
+    price: ["Under ₹50", "₹50-₹100", "₹100-₹200", "Over ₹200"],
   };
 
   const toggleFilter = (type, value) => {
@@ -138,7 +138,6 @@ const CategoryPage = () => {
         );
         return matches;
       });
-      console.log("After size filter:", result.length, "products");
     }
 
     // Apply color filter
@@ -164,7 +163,6 @@ const CategoryPage = () => {
         );
         return matches;
       });
-      console.log("After color filter:", result.length, "products");
     }
 
     // Apply price filter
@@ -200,8 +198,6 @@ const CategoryPage = () => {
 
           return isInRange;
         });
-
-        console.log("After price filter:", result.length, "products");
       } catch (error) {
         console.error("Error applying price filter:", error);
       }
@@ -467,136 +463,142 @@ const CategoryPage = () => {
                 </motion.div>
               )}
               <AnimatePresence>
-                {filteredProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(50%-1rem)] group font-[PPR]"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div
-                      className="relative bg-white overflow-hidden rounded-xl"
-                      style={{
-                        boxShadow:
-                          "0 10px 30px -10px rgba(0, 0, 0, 0.05) rgba(255, 255, 255, 0.8)",
-                      }}
+                {filteredProducts.map((product, index) => {
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(50%-1rem)] group font-[PPR]"
+                      whileHover={{ scale: 1.02 }}
                     >
-                      <Link
-                        to={`/product/${product.id}`}
-                        className="block focus:outline-none"
+                      <div
+                        className="relative bg-white overflow-hidden rounded-xl"
+                        style={{
+                          boxShadow:
+                            "0 10px 30px -10px rgba(0, 0, 0, 0.05) rgba(255, 255, 255, 0.8)",
+                        }}
                       >
-                        <div className="w-full aspect-[3/4] bg-gray-50 overflow-hidden">
-                          <motion.img
-                            src={
-                              product.image ||
-                              "https://placehold.co/300x400/ffffff/000000?text=Product+Image"
-                            }
-                            alt={product.name}
-                            className="w-full h-full object-cover object-center"
-                            layoutId={`product-image-${product.id}`}
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.6 }}
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src =
-                                "https://placehold.co/300x400/ffffff/000000?text=Product+Image";
-                            }}
-                          />
-                        </div>
-
-                        {/* Quick shop overlay */}
-                        <div className="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition-all duration-300">
-                          <motion.span className="px-6 py-2.5 bg-white text-gray-900  rounded-full text-sm font-medium transform translate-y-4 transition-transform duration-300">
-                            Quick View
-                          </motion.span>
-                        </div>
-                      </Link>
-
-                      <div className="pt-4 pb-1 px-1">
                         <Link
                           to={`/product/${product.id}`}
-                          className="block hover:text-indigo-600 digo-400 transition-colors"
+                          className="block focus:outline-none"
                         >
-                          <h3 className="text-base font-[PPR] font-light text-gray-900  mb-1">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-base font-[PPR] text-gray-900 ">
-                            ${parseFloat(product.price).toFixed(2)}
-                          </span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-gray-500  line-through">
-                              ${parseFloat(product.originalPrice).toFixed(2)}
-                            </span>
-                          )}
-                        </div>
+                          <div className="w-full aspect-[3/4] bg-gray-50 overflow-hidden">
+                            <motion.img
+                              src={
+                                product.image ||
+                                "https://placehold.co/300x400/ffffff/000000?text=Product+Image"
+                              }
+                              alt={product.name}
+                              className="w-full h-full object-cover object-center"
+                              layoutId={`product-image-${product.id}`}
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.6 }}
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src =
+                                  "https://placehold.co/300x400/ffffff/000000?text=Product+Image";
+                              }}
+                            />
+                          </div>
 
-                        {/* Action buttons */}
-                        <div className="flex gap-2 mt-3 opacity-0 transition-opacity duration-300">
-                          <motion.button
-                            onClick={() => handleAddToCart(product)}
-                            className="flex-1 flex items-center justify-center gap-1.5 bg-indigo-600  text-white py-2 px-3 rounded-full text-sm font-medium relative overflow-hidden"
-                            whileTap={{ scale: 0.97 }}
-                            style={{
-                              boxShadow:
-                                "0 8px 16px -8px rgba(79, 70, 229, 0.3)",
-                            }}
+                          {/* Quick shop overlay */}
+                          <div className="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition-all duration-300">
+                            <motion.span className="px-6 py-2.5 bg-white text-gray-900  rounded-full text-sm font-medium transform translate-y-4 transition-transform duration-300">
+                              Quick View
+                            </motion.span>
+                          </div>
+                        </Link>
+
+                        <div className="pt-4 pb-1 px-1">
+                          <Link
+                            to={`/product/${product.id}`}
+                            className="block hover:text-indigo-600 digo-400 transition-colors"
                           >
-                            {addedProductIds[product.id] ? (
-                              <>
-                                <motion.div
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  className="absolute inset-0 bg-green-500 flex items-center justify-center"
-                                >
+                            <h3 className="text-base font-[PPR] font-light text-gray-900  mb-1">
+                              {product.name}
+                            </h3>
+                          </Link>
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-base font-[PPR] text-gray-900 ">
+                              ₹{parseFloat(product.price).toFixed(2)}
+                            </span>
+                            {product.originalPrice && (
+                              <span className="text-sm text-gray-500  line-through">
+                                ₹{parseFloat(product.originalPrice).toFixed(2)}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Action buttons */}
+                          <div className="flex gap-2 mt-3 transition-opacity duration-300">
+                            <motion.button
+                              onClick={() => handleAddToCart(product)}
+                              className="flex-1 flex items-center justify-center gap-1.5 bg-indigo-600  text-white py-2 px-3 rounded-full text-sm font-medium relative overflow-hidden"
+                              whileTap={{ scale: 0.97 }}
+                              style={{
+                                boxShadow:
+                                  "0 8px 16px -8px rgba(79, 70, 229, 0.3)",
+                              }}
+                            >
+                              {addedProductIds[product?.id] ||
+                              cartItems?.some(
+                                (item) => item?.product?.id === product?.id
+                              ) ? (
+                                <>
                                   <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    transition={{ delay: 0.1 }}
+                                    className="absolute inset-0 bg-green-500 flex items-center justify-center"
                                   >
-                                    <FaCheck size={14} className="mr-1" />
-                                    Added
+                                    <motion.div
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      transition={{ delay: 0.1 }}
+                                      className="flex items-center justify-center gap-2"
+                                    >
+                                      <FaCheck size={14} className="mr-1" />
+                                      Added
+                                    </motion.div>
                                   </motion.div>
-                                </motion.div>
 
-                                {/* Ripple effect */}
-                                <motion.div
-                                  className="absolute inset-0 pointer-events-none"
-                                  initial={{ scale: 0, opacity: 0.8 }}
-                                  animate={{ scale: 2, opacity: 0 }}
-                                  transition={{ duration: 0.8 }}
-                                  style={{
-                                    borderRadius: "50%",
-                                    background:
-                                      "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
-                                  }}
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <FaShoppingCart size={14} />
-                                Add to Cart
-                              </>
-                            )}
-                          </motion.button>
-                          <motion.button
-                            className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 00 text-gray-600  hover:border-indigo-300 indigo-500 hover:text-indigo-600 digo-400 transition-colors"
-                            whileTap={{ scale: 0.9 }}
-                            style={{
-                              boxShadow:
-                                "0 5px 15px -5px rgba(79, 70, 229, 0.1)",
-                            }}
-                          >
-                            <FaHeart size={14} />
-                          </motion.button>
+                                  {/* Ripple effect */}
+                                  <motion.div
+                                    className="absolute inset-0 pointer-events-none"
+                                    initial={{ scale: 0, opacity: 0.8 }}
+                                    animate={{ scale: 2, opacity: 0 }}
+                                    transition={{ duration: 0.8 }}
+                                    style={{
+                                      borderRadius: "50%",
+                                      background:
+                                        "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <FaShoppingCart size={14} />
+                                  Add to Cart
+                                </>
+                              )}
+                            </motion.button>
+                            <motion.button
+                              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 00 text-gray-600  hover:border-indigo-300 indigo-500 hover:text-indigo-600 digo-400 transition-colors"
+                              whileTap={{ scale: 0.9 }}
+                              style={{
+                                boxShadow:
+                                  "0 5px 15px -5px rgba(79, 70, 229, 0.1)",
+                              }}
+                            >
+                              <FaHeart size={14} />
+                            </motion.button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </div>
 

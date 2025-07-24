@@ -22,7 +22,10 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY} appearance={clerkAppearance}>
+        <ClerkProvider
+          publishableKey={PUBLISHABLE_KEY}
+          appearance={clerkAppearance}
+        >
           <LenisProvider>
             <App />
             <ToastContainer
@@ -36,7 +39,7 @@ createRoot(document.getElementById("root")).render(
               pauseOnFocusLoss
               draggable
               pauseOnHover
-              theme="auto"
+              theme="light"
             />
           </LenisProvider>
         </ClerkProvider>
