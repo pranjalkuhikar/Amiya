@@ -16,6 +16,8 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@reduxjs/toolkit": "^2.8.2",
+    "@stripe/react-stripe-js": "^3.8.0",
+    "@stripe/stripe-js": "^7.6.1",
     "@tailwindcss/vite": "^4.1.11",
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",

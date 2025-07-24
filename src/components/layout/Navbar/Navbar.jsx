@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartCount } from "../../../features/cartSlice";
@@ -7,12 +8,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import "./Navbar.scss";
 
 const Navbar = () => {
+  const { isSignedIn } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
   const navRef = useRef(null);
-  const dispatch = useDispatch();
 
   // Use Redux instead of Context API
   const cartCount = useSelector(selectCartCount);
@@ -117,31 +118,44 @@ const Navbar = () => {
             <CartCounter />
           </Link>
           <span className="nav-btn-divider"></span>
-          <Link to="/sign-in" className="nav-btn-item">
-            <svg
-              className="icon-account"
-              width="16"
-              height="18"
-              viewBox="0 0 16 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15.024 17.0559V15.3068C15.024 14.379 14.6555 13.4892 13.9994 12.8332C13.3434 12.1772 12.4536 11.8086 11.5258 11.8086H4.52944C3.60166 11.8086 2.71188 12.1772 2.05585 12.8332C1.39981 13.4892 1.03125 14.379 1.03125 15.3068V17.0559"
-                stroke="currentColor"
-                strokeWidth="0.983866"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+          {isSignedIn ? (
+            <div className="nav-btn-item">
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-6 h-6",
+                    userButtonTrigger: "focus:shadow-none",
+                  },
+                }}
               />
-              <path
-                d="M8.02798 8.30986C9.95997 8.30986 11.5262 6.74367 11.5262 4.81167C11.5262 2.87967 9.95997 1.31348 8.02798 1.31348C6.09598 1.31348 4.52979 2.87967 4.52979 4.81167C4.52979 6.74367 6.09598 8.30986 8.02798 8.30986Z"
-                stroke="currentColor"
-                strokeWidth="0.983866"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+            </div>
+          ) : (
+            <Link to="/sign-in" className="nav-btn-item group">
+              <svg
+                className="icon-account"
+                width="16"
+                height="18"
+                viewBox="0 0 16 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.024 17.0559V15.3068C15.024 14.379 14.6555 13.4892 13.9994 12.8332C13.3434 12.1772 12.4536 11.8086 11.5258 11.8086H4.52944C3.60166 11.8086 2.71188 12.1772 2.05585 12.8332C1.39981 13.4892 1.03125 14.379 1.03125 15.3068V17.0559"
+                  stroke="currentColor"
+                  strokeWidth="0.983866"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M8.02798 8.30986C9.95997 8.30986 11.5262 6.74367 11.5262 4.81167C11.5262 2.87967 9.95997 1.31348 8.02798 1.31348C6.09598 1.31348 4.52979 2.87967 4.52979 4.81167C4.52979 6.74367 6.09598 8.30986 8.02798 8.30986Z"
+                  stroke="currentColor"
+                  strokeWidth="0.983866"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          )}
         </div>
 
         <div className="right-side-nav-items">

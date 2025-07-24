@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash, FaArrowLeft, FaPlus, FaMinus } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import { useAuth } from '@clerk/clerk-react';
 import {
   removeFromCart,
   updateQuantity,
@@ -11,6 +12,8 @@ import {
 import "./Cart.scss";
 
 const Cart = () => {
+  const navigate = useNavigate();
+  const { isSignedIn } = useAuth();
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
@@ -232,7 +235,13 @@ const Cart = () => {
                 <div className="checkout-button-wrapper">
                   <button
                     type="button"
-                    onClick={() => setIsCheckingOut(true)}
+                    onClick={() => {
+                      if (!isSignedIn) {
+                        navigate("/sign-in");
+                      } else {
+                        setIsCheckingOut(true);
+                      }
+                    }}
                     className="checkout-button font-[PPS]"
                   >
                     Checkout

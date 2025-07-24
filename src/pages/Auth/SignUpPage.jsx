@@ -8,7 +8,7 @@ const SignUpPage = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        margin: "10em 0",
+        margin: "3.5em 0",
       }}
     >
       <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
