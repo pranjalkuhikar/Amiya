@@ -3,22 +3,31 @@ import { Link } from "react-router-dom";
 import { FaTrash, FaArrowLeft, FaPlus, FaMinus } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, updateQuantity, selectCartItems } from "../../features/cartSlice";
+import {
+  removeFromCart,
+  updateQuantity,
+  selectCartItems,
+} from "../../features/cartSlice";
 import "./Cart.scss";
 
 const Cart = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
   const handleRemoveFromCart = (id, selectedSize, selectedColor) => {
     dispatch(removeFromCart({ itemId: id, selectedSize, selectedColor }));
   };
 
-  const handleUpdateQuantity = (id, selectedSize, selectedColor, newQuantity) => {
-    dispatch(updateQuantity({ itemId: id, selectedSize, selectedColor, newQuantity }));
+  const handleUpdateQuantity = (
+    id,
+    selectedSize,
+    selectedColor,
+    newQuantity
+  ) => {
+    dispatch(
+      updateQuantity({ itemId: id, selectedSize, selectedColor, newQuantity })
+    );
   };
-
-
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + parseFloat(item.price) * (item.quantity || 1),
@@ -31,9 +40,7 @@ const Cart = () => {
     <div className="cart-page-container">
       <div className="cart-content-wrapper">
         <div className="cart-inner-wrapper">
-          <h1 className="cart-heading">
-            Shopping Cart
-          </h1>
+          <h1 className="cart-heading">Shopping Cart</h1>
 
           {cartItems.length === 0 ? (
             <div className="empty-cart-container">
@@ -51,16 +58,14 @@ const Cart = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <h3 className="empty-cart-title">
-                Your cart is empty
-              </h3>
+              <h3 className="empty-cart-title">Your cart is empty</h3>
               <p className="empty-cart-text">
                 Start adding some items to your cart
               </p>
               <div className="empty-cart-button-wrapper">
                 <Link
                   to="/shop"
-                  className="continue-shopping-button"
+                  className="continue-shopping-button font-[PPS]"
                 >
                   Continue Shopping
                 </Link>
@@ -68,7 +73,10 @@ const Cart = () => {
             </div>
           ) : (
             <div className="cart-main-content">
-              <section aria-labelledby="cart-heading" className="cart-items-section">
+              <section
+                aria-labelledby="cart-heading"
+                className="cart-items-section"
+              >
                 <h2 id="cart-heading" className="sr-only">
                   Items in your shopping cart
                 </h2>
@@ -78,9 +86,7 @@ const Cart = () => {
                     <li key={product.id} className="cart-item">
                       <div className="cart-item-image-wrapper">
                         <img
-                          src={
-                            product.image
-                          }
+                          src={product.image}
                           alt={product.name}
                           className="cart-item-image"
                         />
@@ -102,9 +108,7 @@ const Cart = () => {
                             <p className="cart-item-category">
                               {product.category}
                             </p>
-                            <p className="cart-item-price">
-                              ₹{product.price}
-                            </p>
+                            <p className="cart-item-price">₹{product.price}</p>
                           </div>
 
                           <div className="cart-item-actions">
@@ -187,14 +191,14 @@ const Cart = () => {
               >
                 <h2
                   id="summary-heading"
-                  className="order-summary-heading"
+                  className="order-summary-heading font-[PPS]"
                 >
                   Order summary
                 </h2>
 
                 <dl className="order-summary-list">
                   <div className="order-summary-item">
-                    <dt className="order-summary-label">Subtotal</dt>
+                    <dt className="order-summary-label ">Subtotal</dt>
                     <dd className="order-summary-value">
                       ₹{subtotal.toFixed(2)}
                     </dd>
@@ -207,11 +211,11 @@ const Cart = () => {
                       ₹{shipping.toFixed(2)}
                     </dd>
                   </div>
-                  <div className="order-summary-item border-top">
-<dt className="order-total-label">Order total</dt>
-                    <dd className="order-total-value">
-                      ₹{total.toFixed(2)}
-                    </dd>
+                  <div className="order-summary-item border-top font-[PPR]">
+                    <dt className="order-total-label font-[PPS]">
+                      Order total
+                    </dt>
+                    <dd className="order-total-value">₹{total.toFixed(2)}</dd>
                   </div>
                 </dl>
 
@@ -219,18 +223,21 @@ const Cart = () => {
                   <button
                     type="button"
                     onClick={() => setIsCheckingOut(true)}
-                    className="checkout-button"
+                    className="checkout-button font-[PPS]"
                   >
                     Checkout
                   </button>
                 </div>
 
-                <div className="mt-6 text-center text-sm">
-                  <p>
+                <div
+                  className="mt-6 text-center text-sm font-[PPR]"
+                  style={{ marginTop: "2rem" }}
+                >
+                  <p className="flex gap-4 items-center justify-center">
                     or{" "}
                     <Link
                       to="/shop"
-                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                      className="font-medium font-[PPS] text-indigo-600 hover:text-indigo-500"
                     >
                       Continue Shopping<span aria-hidden="true"> &rarr;</span>
                     </Link>

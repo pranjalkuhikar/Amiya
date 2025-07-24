@@ -140,7 +140,7 @@ const ProductDetail = () => {
           {/* Thumbnail images */}
           {product.images && product.images.length > 1 && (
             <motion.div
-              className="grid grid-cols-4 gap-2 "
+              className="product-thumbnail-grid"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -149,11 +149,7 @@ const ProductDetail = () => {
                 <motion.button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`aspect-square overflow-hidden rounded-lg ${
-                    currentImageIndex === index
-                      ? "ring-2 ring-indigo-600"
-                      : "ring-1 ring-gray-300 hover:ring-indigo-300"
-                  }`}
+                  className={`thumbnail-button ${currentImageIndex === index ? "active" : ""}`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -366,38 +362,43 @@ const ProductDetail = () => {
                 whileHover={product.available ? { scale: 1.02 } : {}}
                 whileTap={product.available ? { scale: 0.98 } : {}}
               >
-                {isAddedToCart ? (
-                  <>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="added-to-cart-overlay"
-                    >
+                <AnimatePresence>
+                  {isAddedToCart && (
+                    <>
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="flex items-center justify-center gap-2"
+                        exit={{ scale: 0, opacity: 0 }}
+                        className="added-to-cart-overlay"
                       >
-                        <FaCheck className="mr-2" />
-                        Added
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.2 }}
+                          className="flex items-center justify-center gap-2"
+                        >
+                          <FaCheck className="mr-2" />
+                          Added
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
 
-                    {/* Ripple effect */}
-                    <motion.div
-                      className="ripple-effect"
-                      initial={{ scale: 0, opacity: 0.8 }}
-                      animate={{ scale: 2, opacity: 0 }}
-                      transition={{ duration: 1 }}
-                      style={{
-                        borderRadius: "50%",
-                        background:
-                          "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
-                      }}
-                    />
-                  </>
-                ) : (
+                      {/* Ripple effect */}
+                      <motion.div
+                        className="ripple-effect"
+                        initial={{ scale: 0, opacity: 0.8 }}
+                        animate={{ scale: 2, opacity: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                        style={{
+                          borderRadius: "50%",
+                          background:
+                            "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
+                        }}
+                      />
+                    </>
+                  )}
+                </AnimatePresence>
+                {!isAddedToCart && (
                   <>
                     <FaShoppingCart />
                     {product.available ? "Add to Cart" : "Out of Stock"}
@@ -417,22 +418,22 @@ const ProductDetail = () => {
           </div>
 
           {/* Product details accordion */}
-          <div className="mt-6 border-t border-gray-200 pt-4">
+          <div className="mt-6 border-t border-gray-200 pt-4 product-details-accordion">
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <ProductAccordion title="Shipping & Returns">
-                <p className="text-gray-600">
+              <ProductAccordion title="Shipping & Returns" className="accordion-item">
+                <p className="text-gray-600 accordion-content">
                   Free shipping on all orders over ₹50. Returns accepted within
                   30 days of delivery.
                 </p>
               </ProductAccordion>
 
-              <ProductAccordion title="Materials & Care">
-                <p className="text-gray-600">
+              <ProductAccordion title="Materials & Care" className="accordion-item">
+                <p className="text-gray-600 accordion-content">
                   Please refer to the product description for material details.
                   Follow care instructions on the label.
                 </p>
@@ -448,17 +449,17 @@ const ProductDetail = () => {
 };
 
 // Accordion component for product details
-const ProductAccordion = ({ title, children }) => {
+const ProductAccordion = ({ title, children, className }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-200 pb-4">
+    <div className={`accordion-item ${className || ''}`}>
       <button
-        className="flex justify-between items-center w-full py-2 text-left font-medium text-gray-900"
+        className="accordion-button"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{title}</span>
-        <span className="text-lg">{isOpen ? "−" : "+"}</span>
+        <span>{isOpen ? "−" : "+"}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -469,7 +470,7 @@ const ProductAccordion = ({ title, children }) => {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="pt-2 pb-1">{children}</div>
+            <div className="accordion-content">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
