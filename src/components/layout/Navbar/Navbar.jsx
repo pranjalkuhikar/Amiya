@@ -128,7 +128,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="line"></div>
-          <Link to="/login" className="account">
+          <Link to="/sign-in" className="account">
             <svg
               className="icon-account"
               width="16"
@@ -204,7 +204,7 @@ const Navbar = () => {
             <div className="line"></div>
             <div className="relative">
               <Link
-                to="/login"
+                to="/sign-in"
                 className="account"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Account"

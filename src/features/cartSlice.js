@@ -127,5 +127,7 @@ export const {
 export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartCount = (state) => state.cart.cartCount;
 export const selectIsCartUpdated = (state) => state.cart.isCartUpdated;
+export const selectCartTotal = (state) =>
+  state.cart.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
 export default cartSlice.reducer;

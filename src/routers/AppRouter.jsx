@@ -5,8 +5,9 @@ import Shop from "../pages/Shop/Shop";
 import Navbar from "../components/layout/Navbar/Navbar";
 import Contact from "../pages/Contact/Contact";
 import Cart from "../pages/Cart/Cart";
-import Login from "../pages/Auth/Login/Login";
-import Register from "../pages/Auth/Register/Register";
+import CheckoutPage from "../pages/Checkout/CheckoutPage";
+import SignInPage from "../pages/Auth/SignInPage";
+import SignUpPage from "../pages/Auth/SignUpPage";
 import Dashboard from "../pages/Account/Dashboard";
 import Footer from "../components/layout/Footer/Footer";
 import ProductDetail from "../pages/Shop/ProductDetail";
@@ -20,9 +21,10 @@ const AppRouter = () => {
         <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/cart" element={<Cart />} />
+         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/account" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
