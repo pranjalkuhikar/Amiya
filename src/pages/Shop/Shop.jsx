@@ -1,4 +1,4 @@
-import CategoryPage from "./categorypage";
+import CategoryPage from "./CategoryPage";
 
 const Shop = () => {
   return (
