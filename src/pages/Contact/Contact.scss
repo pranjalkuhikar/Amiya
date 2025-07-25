@@ -117,6 +117,18 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Focus shadow */
             outline: none;
           }
+
+          &.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+          }
+        }
+
+        .error-message {
+          color: #ef4444;
+          font-size: 0.875rem;
+          margin-top: 0.5rem;
+          display: block;
         }
 
         textarea {
@@ -137,13 +149,20 @@
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.2s ease;
 
-        &:hover {
+        &:hover:not(:disabled) {
           background-color: #4e46e5ed; /* Darker blue on hover */
           transform: translateY(-2px); /* Slight lift */
         }
 
-        &:active {
+        &:active:not(:disabled) {
           transform: translateY(0); /* Press effect */
+        }
+
+        &:disabled {
+          background-color: #666;
+          cursor: not-allowed;
+          transform: none;
+          opacity: 0.7;
         }
       }
     }

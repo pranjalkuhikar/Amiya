@@ -92,7 +92,7 @@ const Loader = ({ onAnimationComplete }) => {
         {counter}%
       </div>
       <div className="loader-text-container">
-        <p className="loader-text" ref={textRef}>
+        <p className="loader-text font-[PPR]" ref={textRef}>
           Amiya
         </p>
       </div>

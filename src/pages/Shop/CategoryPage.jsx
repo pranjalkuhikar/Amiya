@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Filter } from "lucide-react";
+import { Filter, Search, X } from "lucide-react";
 import { useGetProductsQuery } from "../../features/apiSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaHeart, FaCheck } from "react-icons/fa";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCartItems } from "../../features/cartSlice";
 import "./CategoryPage.scss";
 
 const CategoryPage = () => {
+  const navigate = useNavigate();
   const { data: products = [], isLoading, isError } = useGetProductsQuery();
   const [filters, setFilters] = useState({
     size: [],
@@ -17,6 +19,8 @@ const CategoryPage = () => {
   });
   const [sortOption, setSortOption] = useState("latest");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const productsPerPage = 8;
 
   const handleSortChange = (e) => {
@@ -34,9 +38,30 @@ const CategoryPage = () => {
     setIsClient(true);
   }, []);
 
+  // Debounce search query for better performance
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Handle add to cart with Redux
   const handleAddToCart = (product) => {
-    // Add to cart using Redux
+    // Check if product has sizes or colors that need to be selected
+    const hasVariants =
+      (product.sizes && product.sizes.length > 0) ||
+      (product.colors && product.colors.length > 0);
+
+    if (hasVariants) {
+      // Redirect to product detail page for variant selection
+      toast.info("Please select size and color options");
+      navigate(`/product/${product.id}`);
+      return;
+    }
+
+    // Add to cart using Redux (for products without variants)
     dispatch(
       addToCart({
         product,
@@ -105,6 +130,19 @@ const CategoryPage = () => {
     }
 
     let result = [...products];
+
+    // Apply search filter
+    if (debouncedSearchQuery.trim()) {
+      result = result.filter(
+        (product) =>
+          product.name
+            ?.toLowerCase()
+            .includes(debouncedSearchQuery.toLowerCase()) ||
+          product.description
+            ?.toLowerCase()
+            .includes(debouncedSearchQuery.toLowerCase())
+      );
+    }
 
     // Apply sorting
     if (sortOption === "price-asc") {
@@ -211,13 +249,13 @@ const CategoryPage = () => {
     );
 
     return currentProducts;
-  }, [products, filters, sortOption, currentPage]);
+  }, [products, filters, sortOption, currentPage, debouncedSearchQuery]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="loading-container">
         <motion.div
-          className="w-16 h-16 border-t-4 border-indigo-600 border-solid rounded-full"
+          className="loading-spinner"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
@@ -227,12 +265,22 @@ const CategoryPage = () => {
 
   if (isError) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-red-600 mb-2">
-            Error loading products
-          </h2>
-          <p className="text-gray-600 ">Please try again later</p>
+      <div className="error-container">
+        <div className="error-content">
+          <div className="error-icon">
+            <X size={32} />
+          </div>
+          <h2 className="error-title">Oops! Something went wrong</h2>
+          <p className="error-message">
+            We couldn't load the products. Please check your connection and try
+            again.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="retry-button"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
@@ -243,18 +291,18 @@ const CategoryPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-white  pt-20 font-[PPR]"
+      className="main-container"
     >
       {/* Hero Section with Parallax Effect */}
-      <div className="category-page relative bg-gray-50 flex items-center justify-center overflow-hidden">
+      <div className="category-page hero-section">
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-center z-10 px-4"
+          className="hero-content"
         >
           <motion.h1
-            className="heading text-4xl md:text-8xl font-light tracking-tight mb-6 font-[PPMori] pt-80"
+            className="heading hero-title"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -262,7 +310,7 @@ const CategoryPage = () => {
             New Collection
           </motion.h1>
           <motion.p
-            className="text-gray-900  max-w-xl mx-auto text-lg"
+            className="hero-description"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -273,39 +321,63 @@ const CategoryPage = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-8"
+            className="hero-cta"
           ></motion.div>
         </motion.div>
 
         {/* Background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-100 to-purple-100 00 "></div>
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, #000 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-            }}
-          ></div>
+        <div className="hero-background">
+          <div className="hero-gradient"></div>
+          <div className="hero-pattern"></div>
         </div>
       </div>
 
-      <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-16">
+      <div className="content-wrapper">
+        {/* Search Bar */}
+        <div className="search-container">
+          <div className="search-wrapper">
+            <div className="search-icon">
+              <Search size={20} />
+            </div>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`search-input ${
+                searchQuery ? "has-clear-button" : ""
+              }`}
+              aria-label="Search products"
+              role="searchbox"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="clear-button"
+                aria-label="Clear search"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Mobile Filter Button */}
-        <div className="lg:hidden mb-8 mx-10">
+        <div className="mobile-filter-container">
           <motion.button
             onClick={() => setShowFilters(!showFilters)}
             className="mobile-filter-button"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            aria-label={showFilters ? "Hide filters" : "Show filters"}
+            aria-expanded={showFilters}
           >
             <Filter size={18} />
             Filters
           </motion.button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10">
+        <div className="layout-container">
           {/* Filters Sidebar */}
           <AnimatePresence>
             {(showFilters || (isClient && window.innerWidth >= 1024)) && (
@@ -314,17 +386,17 @@ const CategoryPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="lg:w-72 flex-shrink-0"
+                className="filter-sidebar"
               >
                 <div
-                  className="sticky filterbar top-24 bg-white p-8 border border-gray-100 00 rounded-2xl shadow-sm backdrop-blur-sm -md"
+                  className="enhanced-filterbar"
                   style={{
                     boxShadow:
                       "0 10px 30px -10px rgba(0, 0, 0, 0.05) rgba(255, 255, 255, 0.8)",
                   }}
                 >
-                  <div className="flex justify-between items-center mb-8">
-                    <h2 className="font-medium flex gap-2 text-lg ">
+                  <div className="filter-header">
+                    <h2 className="filter-title">
                       <Filter size={18} /> Filters
                     </h2>
                     {filters.size.length > 0 ||
@@ -334,7 +406,7 @@ const CategoryPage = () => {
                         onClick={() =>
                           setFilters({ size: [], color: [], price: null })
                         }
-                        className="text-sm text-indigo-600 00 hover:text-indigo-800 digo-300 font-medium"
+                        className="clear-all-button"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -344,18 +416,16 @@ const CategoryPage = () => {
                   </div>
 
                   {/* Size Filter */}
-                  <div className="mb-8">
-                    <h3 className="font-medium mb-4 text-gray-900 ">Size</h3>
-                    <div className="grid grid-cols-3 gap-2">
+                  <div className="filter-section">
+                    <h3 className="filter-section-title">Size</h3>
+                    <div className="size-filter-grid">
                       {filterOptions.size.map((size) => (
                         <motion.button
                           key={size}
                           onClick={() => toggleFilter("size", size)}
-                          className={`px-3 py-2 text-sm border text-center ${
-                            filters.size.includes(size)
-                              ? "border-indigo-600 bg-indigo-600 text-white"
-                              : "border-gray-200 00 text-gray-700  hover:border-indigo-300 indigo-500 bg-gray-50"
-                          } rounded-md transition-colors duration-200`}
+                          className={`size-filter-button ${
+                            filters.size.includes(size) ? "active" : "inactive"
+                          }`}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
@@ -366,18 +436,18 @@ const CategoryPage = () => {
                   </div>
 
                   {/* Color Filter */}
-                  <div className="mb-8">
-                    <h3 className="font-medium mb-4 text-gray-900 ">Color</h3>
-                    <div className="grid grid-cols-5 gap-3">
+                  <div className="filter-section">
+                    <h3 className="filter-section-title">Color</h3>
+                    <div className="color-filter-grid">
                       {filterOptions.color.map((color) => (
                         <motion.button
                           key={color}
                           onClick={() => toggleFilter("color", color)}
-                          className={`relative w-8 h-8 rounded-full border-2 ${
+                          className={`color-filter-button ${
                             filters.color.includes(color)
-                              ? "border-indigo-600 -400 ring-2 ring-indigo-200 00"
-                              : "border-transparent hover:border-gray-300 gray-600"
-                          } transition-colors duration-200`}
+                              ? "active"
+                              : "inactive"
+                          }`}
                           style={{ backgroundColor: color }}
                           whileHover={{ scale: 1.15 }}
                           whileTap={{ scale: 0.9 }}
@@ -387,20 +457,18 @@ const CategoryPage = () => {
                   </div>
 
                   {/* Price Filter */}
-                  <div>
-                    <h3 className="font-medium mb-4 text-gray-900 ">Price</h3>
-                    <div className="price space-y-2">
+                  <div className="filter-section">
+                    <h3 className="filter-section-title">Price</h3>
+                    <div className="price-filter-list">
                       {filterOptions.price.map((range) => (
                         <motion.button
                           key={range}
                           onClick={() =>
                             setFilters((prev) => ({ ...prev, price: range }))
                           }
-                          className={`price-filter-button w-full text-left px-8 py-2.5 text-sm ${
-                            filters.price === range
-                              ? "bg-indigo-600 text-white rounded-lg"
-                              : "text-gray-700  hover:bg-gray-50 -700 rounded-lg bg-gray-50"
-                          } transition-colors duration-200`}
+                          className={`enhanced-price-filter-button ${
+                            filters.price === range ? "active" : "inactive"
+                          }`}
                           whileHover={{ x: 2 }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -415,16 +483,16 @@ const CategoryPage = () => {
           </AnimatePresence>
 
           {/* Products Grid */}
-          <div className="flex-1 products overflow-hidden space-y-10">
-            <div className="latest p-10 flex justify-between items-center mb-20 mt-20">
+          <div className="products-grid">
+            <div className="products-header">
               <motion.p
-                className="text-gray-900 font-[PPR] font-light"
+                className="products-header-content"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               ></motion.p>
               <motion.select
-                className="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm text-gray-700 hover:border-indigo-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm"
+                className="sort-select"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -437,26 +505,25 @@ const CategoryPage = () => {
               </motion.select>
             </div>
 
-            <div className="product py-80 flex flex-wrap justify-between gap-8">
+            <div className="products-container">
               {filteredProducts.length === 0 && (
                 <motion.div
-                  className="text-center px-4 py-16 h-full w-full gap-5 flex flex-col items-center justify-center"
+                  className="no-products-state"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <h3 className="text-xl font-medium text-gray-900  mb-2">
-                    No products found
-                  </h3>
-                  <p className="text-gray-600  mb-6">
+                  <h3 className="no-products-title">No products found</h3>
+                  <p className="no-products-message">
                     Try adjusting your filters or search criteria
                   </p>
                   <button
                     onClick={() => {
                       setFilters({ size: [], color: [], price: null });
+                      setSearchQuery("");
                       setCurrentPage(1);
                     }}
-                    className="clear px-6 py-2.5 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
+                    className="clear-all-filters-button"
                   >
                     Clear all filters
                   </button>
@@ -470,11 +537,11 @@ const CategoryPage = () => {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(50%-1rem)] group font-[PPR]"
+                      className="product-card"
                       whileHover={{ scale: 1.02 }}
                     >
                       <div
-                        className="relative bg-white overflow-hidden rounded-xl"
+                        className="product-card-container"
                         style={{
                           boxShadow:
                             "0 10px 30px -10px rgba(0, 0, 0, 0.05) rgba(255, 255, 255, 0.8)",
@@ -482,17 +549,18 @@ const CategoryPage = () => {
                       >
                         <Link
                           to={`/product/${product.id}`}
-                          className="block focus:outline-none"
+                          className="product-link"
                         >
-                          <div className="w-full aspect-[3/4] bg-gray-50 overflow-hidden">
+                          <div className="product-image-container">
                             <motion.img
                               src={
                                 product.image ||
                                 "https://placehold.co/300x400/ffffff/000000?text=Product+Image"
                               }
                               alt={product.name}
-                              className="w-full h-full object-cover object-center"
+                              className="product-image"
                               layoutId={`product-image-${product.id}`}
+                              loading="lazy"
                               whileHover={{ scale: 1.05 }}
                               transition={{ duration: 0.6 }}
                               onError={(e) => {
@@ -504,43 +572,42 @@ const CategoryPage = () => {
                           </div>
 
                           {/* Quick shop overlay */}
-                          <div className="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center opacity-0 transition-all duration-300">
-                            <motion.span className="px-6 py-2.5 bg-white text-gray-900  rounded-full text-sm font-medium transform translate-y-4 transition-transform duration-300">
+                          <div className="product-overlay">
+                            <motion.span className="overlay-text">
                               Quick View
                             </motion.span>
                           </div>
                         </Link>
 
-                        <div className="pt-4 pb-1 px-1">
+                        <div className="product-info">
                           <Link
                             to={`/product/${product.id}`}
-                            className="block hover:text-indigo-600 digo-400 transition-colors"
+                            className="product-link"
                           >
-                            <h3 className="text-base font-[PPR] font-light text-gray-900  mb-1">
-                              {product.name}
-                            </h3>
+                            <h3 className="product-name">{product.name}</h3>
                           </Link>
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="text-base font-[PPR] text-gray-900 ">
+                          <div className="product-price-container">
+                            <span className="product-price">
                               ₹{parseFloat(product.price).toFixed(2)}
                             </span>
                             {product.originalPrice && (
-                              <span className="text-sm text-gray-500  line-through">
+                              <span className="product-original-price">
                                 ₹{parseFloat(product.originalPrice).toFixed(2)}
                               </span>
                             )}
                           </div>
 
                           {/* Action buttons */}
-                          <div className="flex gap-2 mt-3 transition-opacity duration-300">
+                          <div className="product-actions">
                             <motion.button
                               onClick={() => handleAddToCart(product)}
-                              className="flex-1 flex items-center justify-center gap-1.5 bg-indigo-600  text-white py-2 px-3 rounded-full text-sm font-medium relative overflow-hidden"
+                              className="add-to-cart-button"
                               whileTap={{ scale: 0.97 }}
                               style={{
                                 boxShadow:
                                   "0 8px 16px -8px rgba(79, 70, 229, 0.3)",
                               }}
+                              aria-label={`Add ${product.name} to cart`}
                             >
                               {addedProductIds[product?.id] ||
                               cartItems?.some(
@@ -550,13 +617,13 @@ const CategoryPage = () => {
                                   <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="absolute inset-0 bg-green-500 flex items-center justify-center"
+                                    className="cart-button-success-overlay"
                                   >
                                     <motion.div
                                       initial={{ scale: 0 }}
                                       animate={{ scale: 1 }}
                                       transition={{ delay: 0.1 }}
-                                      className="flex items-center justify-center gap-2"
+                                      className="cart-button-success-content"
                                     >
                                       <FaCheck size={14} className="mr-1" />
                                       Added
@@ -584,7 +651,7 @@ const CategoryPage = () => {
                               )}
                             </motion.button>
                             <motion.button
-                              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 00 text-gray-600  hover:border-indigo-300 indigo-500 hover:text-indigo-600 digo-400 transition-colors"
+                              className="wishlist-button"
                               whileTap={{ scale: 0.9 }}
                               style={{
                                 boxShadow:
@@ -604,40 +671,82 @@ const CategoryPage = () => {
 
             {/* Pagination controls */}
             {products.length > productsPerPage && (
-              <div className="flex justify-center mt-8 pagination-controls page">
-                <button
+              <motion.div
+                className="pagination-container"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <motion.button
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
                   disabled={currentPage === 1}
-                  className="pagination-button disabled:opacity-50"
+                  className="pagination-button nav-button"
+                  whileHover={{ scale: currentPage === 1 ? 1 : 1.05 }}
+                  whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
                 >
-                  Previous
-                </button>
+                  ← Previous
+                </motion.button>
+
                 {Array.from(
                   { length: Math.ceil(products.length / productsPerPage) },
                   (_, i) => (
-                    <button
+                    <motion.button
                       key={i + 1}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`pagination-button ${
                         currentPage === i + 1 ? "active" : ""
                       }`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.2, delay: i * 0.05 }}
                     >
                       {i + 1}
-                    </button>
+                    </motion.button>
                   )
                 )}
-                <button
+
+                <motion.button
                   onClick={() => setCurrentPage((prev) => prev + 1)}
                   disabled={
                     currentPage === Math.ceil(products.length / productsPerPage)
                   }
-                  className="pagination-button disabled:opacity-50"
+                  className="pagination-button nav-button"
+                  whileHover={{
+                    scale:
+                      currentPage ===
+                      Math.ceil(products.length / productsPerPage)
+                        ? 1
+                        : 1.05,
+                  }}
+                  whileTap={{
+                    scale:
+                      currentPage ===
+                      Math.ceil(products.length / productsPerPage)
+                        ? 1
+                        : 0.95,
+                  }}
                 >
-                  Next
-                </button>
-              </div>
+                  Next →
+                </motion.button>
+              </motion.div>
+            )}
+
+            {/* Pagination info */}
+            {products.length > productsPerPage && (
+              <motion.div
+                className="pagination-info"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+              >
+                Showing {(currentPage - 1) * productsPerPage + 1} to{" "}
+                {Math.min(currentPage * productsPerPage, products.length)} of{" "}
+                {products.length} products
+              </motion.div>
             )}
           </div>
         </div>

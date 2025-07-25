@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { User, Package, Heart, Clock, Settings, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useClerk } from "@clerk/clerk-react";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
+  const { signOut } = useClerk();
 
-  const handleSignOut = () => {
-    // Add sign-out logic here (e.g., clear tokens, user data)
-    navigate("/login");
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   const menuItems = [

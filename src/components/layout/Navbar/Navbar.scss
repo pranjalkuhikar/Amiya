@@ -129,7 +129,7 @@ nav {
   @media (max-width: 1024px) {
     font-size: clamp(1rem, 5vw, 1.5rem);
     width: 100%;
-    padding: 1em 5em;
+    padding: 1em 2em;
     .nav-btn-group {
       padding: 0.1em 0.1em;
       margin-left: auto;
@@ -141,7 +141,7 @@ nav {
       background: transparent;
       color: #fff;
       border-radius: 0 0 9999px 9999px;
-      padding: 1.5em 5em;
+      padding: 1.5em 2em;
       box-shadow: none;
 
       // Scrolled state for home page
@@ -149,7 +149,7 @@ nav {
         background: transparent !important;
         color: #ffffff !important;
         border-radius: 0;
-        padding: 1em 5em;
+        padding: 1em 2em;
       }
     }
     .desktop-menu {
@@ -355,20 +355,19 @@ nav {
 
 @media (max-width: 520px) {
   nav {
-    // padding: 1em 1em; /* Adjusted padding for smaller screens */
+    padding: 1em 1em; /* Adjusted padding for smaller screens */
+
     .logo {
-      width: 50%;
+      width: auto;
       height: 40px;
-      padding-left: 3.5em;
       position: relative;
+
       svg {
-        position: absolute;
-        left: -2.8em;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
+        width: 80px;
+        height: 40px;
       }
     }
+
     .nav-btn-group {
       padding: 0.1em 0.1em;
       margin-left: auto;
