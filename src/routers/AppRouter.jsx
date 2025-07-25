@@ -9,6 +9,7 @@ import Cart from "../pages/Cart/Cart";
 import CheckoutPage from "../pages/Checkout/CheckoutPage";
 import SignInPage from "../pages/Auth/SignInPage";
 import SignUpPage from "../pages/Auth/SignUpPage";
+import SSOCallback from "../components/auth/SSOCallback";
 import Loader from "../components/Loader/Loader";
 import gsap from "gsap";
 import Footer from "../components/layout/Footer/Footer";
@@ -93,6 +94,7 @@ const AppRouter = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sso-callback" element={<SSOCallback />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />
