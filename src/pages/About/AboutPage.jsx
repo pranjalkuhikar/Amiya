@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import "./AboutPage.scss";
 import TiltedCard from "../../components/TitledCard/TitledCard";
+import { Link } from "react-router-dom";
 
 const AboutPage = () => {
   return (
@@ -24,12 +25,12 @@ const AboutPage = () => {
             elegant, modern designs. Aimee inspires millions with her creative
             style and strong presence in the fashion world.
           </p>
-          <a
-            href="https://www.instagram.com/aimeesong/"
+          <Link
+            to="https://www.instagram.com/aimeesong/"
             className="website-link"
           >
             AIMEESONG <span className="arrow">&#8599;</span>
-          </a>
+          </Link>
         </div>
         <div className="image-section">
           <TiltedCard

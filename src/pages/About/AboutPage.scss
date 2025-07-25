@@ -83,17 +83,38 @@
     color: #4f46e5;
     text-decoration: none;
     font-weight: bold;
+    width: fit-content;
     display: inline-flex;
     align-items: center;
+    gap: 0.5em;
     transition: color 0.3s ease;
-
-    &:hover {
-      color: #4f46e5; /* Darker sienna */
-    }
+    position: relative;
 
     .arrow {
-      margin-left: 5px;
-      font-size: 1.2em;
+      transition: transform 0.3s ease;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: currentColor;
+      transition: width 0.3s ease;
+    }
+
+    &:hover {
+      color: #3730a3;
+
+      .arrow {
+        transform: translateX(5px);
+      }
+
+      &::after {
+        width: 100%;
+      }
     }
   }
 }
