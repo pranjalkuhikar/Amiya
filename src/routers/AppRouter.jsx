@@ -1,4 +1,3 @@
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Home from "../pages/Home/Home";
@@ -10,11 +9,11 @@ import Cart from "../pages/Cart/Cart";
 import CheckoutPage from "../pages/Checkout/CheckoutPage";
 import SignInPage from "../pages/Auth/SignInPage";
 import SignUpPage from "../pages/Auth/SignUpPage";
-import Dashboard from "../pages/Account/Dashboard";
 import Loader from "../components/Loader/Loader";
 import gsap from "gsap";
 import Footer from "../components/layout/Footer/Footer";
 import ProductDetail from "../pages/Shop/ProductDetail";
+import PageTransition from "../components/common/PageTransition/PageTransition";
 
 const AppRouter = () => {
   const [loading, setLoading] = useState(true);
@@ -86,38 +85,20 @@ const AppRouter = () => {
     <>
       <div ref={mainContentRef}>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route
-            path="/account"
-            element={
-              <SignedIn>
-                <Dashboard />
-              </SignedIn>
-            }
-          />
-          <Route
-            path="/account"
-            element={
-              <SignedOut>
-                <Navigate
-                  to={`/sign-in?redirect_url=${encodeURIComponent(
-                    window.location.pathname
-                  )}`}
-                />
-              </SignedOut>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <PageTransition>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </PageTransition>
         <Footer />
       </div>
 

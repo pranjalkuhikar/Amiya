@@ -67,15 +67,21 @@ const SignInPage = () => {
     setIsLoading(true);
 
     try {
+      // Use the correct strategy for email/password sign in
       const result = await signIn.create({
         identifier: formData.email,
         password: formData.password,
+        strategy: "password",
       });
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
         toast.success("Welcome back!");
         navigate(redirectUrl || "/");
+      } else if (result.status === "needs_verification") {
+        // Handle cases where verification is needed
+        console.log("Verification needed:", result);
+        toast.error("Account verification required. Please check your email.");
       } else {
         console.error("Sign in not complete:", result);
         toast.error("Sign in failed. Please try again.");

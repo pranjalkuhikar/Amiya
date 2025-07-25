@@ -1,0 +1,138 @@
+.page-transition-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-content {
+  width: 100%;
+  min-height: 100vh;
+  transition: opacity 0.3s ease;
+
+  &.transitioning {
+    pointer-events: none;
+  }
+}
+
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  will-change: transform;
+
+  .transition-content {
+    text-align: center;
+    color: white;
+    font-family: "PPR", sans-serif;
+
+    .transition-logo {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out 0.2s forwards;
+
+      @media (max-width: 768px) {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      @media (max-width: 480px) {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .transition-line {
+      width: 100px;
+      height: 2px;
+      background: white;
+      margin: 0 auto;
+      opacity: 0;
+      animation: expandLine 0.8s ease-out 0.4s forwards;
+
+      @media (max-width: 480px) {
+        width: 80px;
+        height: 1.5px;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expandLine {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+// Alternative transition styles for different pages
+.page-transition-overlay.shop-transition {
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+.page-transition-overlay.about-transition {
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+}
+
+.page-transition-overlay.contact-transition {
+  background: linear-gradient(135deg, #744210 0%, #975a16 100%);
+}
+
+// Smooth scroll behavior during transitions
+.page-transition-container * {
+  scroll-behavior: smooth;
+}
+
+// Prevent layout shift during transitions
+.page-content > * {
+  will-change: transform, opacity;
+}
+
+// Loading state for slow connections
+.page-transition-overlay.loading {
+  .transition-content::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    margin: 2rem auto 0;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
