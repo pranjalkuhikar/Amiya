@@ -110,10 +110,12 @@
   }
 
   .team-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
+    .team-members-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
 
     .team-member {
       background-color: #fff;
@@ -124,6 +126,7 @@
       flex: 1;
       min-width: 280px;
       max-width: 350px;
+      transition: all 0.3s ease;
 
       h3 {
         font-size: 1.8em;
@@ -150,19 +153,19 @@
   }
 }
 
-  @media (max-width: 1024px) {
-    .founder-section {
-      flex-direction: column;
-      text-align: center;
+@media (max-width: 1024px) {
+  .founder-section {
+    flex-direction: column;
+    text-align: center;
 
-      .founder-content {
-        h2,
-        p {
-          text-align: center;
-        }
+    .founder-content {
+      h2,
+      p {
+        text-align: center;
       }
     }
   }
+}
 
 @media (max-width: 768px) {
   .about-page {

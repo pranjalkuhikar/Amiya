@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Filter, Search, X } from "lucide-react";
 import { useGetProductsQuery } from "../../features/apiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaHeart, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,11 @@ const CategoryPage = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Handle navigation to product details
+  const handleProductNavigation = (productId) => {
+    navigate(`/product/${productId}`);
+  };
+
   // Handle add to cart with Redux
   const handleAddToCart = (product) => {
     // Check if product has sizes or colors that need to be selected
@@ -57,7 +62,7 @@ const CategoryPage = () => {
     if (hasVariants) {
       // Redirect to product detail page for variant selection
       toast.info("Please select size and color options");
-      navigate(`/product/${product.id}`);
+      handleProductNavigation(product.id);
       return;
     }
 
@@ -547,9 +552,10 @@ const CategoryPage = () => {
                             "0 10px 30px -10px rgba(0, 0, 0, 0.05) rgba(255, 255, 255, 0.8)",
                         }}
                       >
-                        <Link
-                          to={`/product/${product.id}`}
+                        <div
+                          onClick={() => handleProductNavigation(product.id)}
                           className="product-link"
+                          style={{ cursor: "pointer" }}
                         >
                           <div className="product-image-container">
                             <motion.img
@@ -577,15 +583,16 @@ const CategoryPage = () => {
                               Quick View
                             </motion.span>
                           </div>
-                        </Link>
+                        </div>
 
                         <div className="product-info">
-                          <Link
-                            to={`/product/${product.id}`}
+                          <div
+                            onClick={() => handleProductNavigation(product.id)}
                             className="product-link"
+                            style={{ cursor: "pointer" }}
                           >
                             <h3 className="product-name">{product.name}</h3>
-                          </Link>
+                          </div>
                           <div className="product-price-container">
                             <span className="product-price">
                               ₹{parseFloat(product.price).toFixed(2)}

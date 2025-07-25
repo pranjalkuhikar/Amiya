@@ -15,12 +15,10 @@ nav {
   padding: 1em 5em;
   transition: all 0.3s ease-in-out;
 
-  // Home page specific styles
+  // Home page specific styles - only visual differences
   body.home-page & {
     background: transparent;
     color: #fff;
-    border-radius: 0 0 9999px 9999px;
-    padding: 1.5em 5em;
     box-shadow: none;
 
     // Scrolled state for home page
@@ -140,15 +138,12 @@ nav {
     body.home-page & {
       background: transparent;
       color: #fff;
-      border-radius: 0 0 9999px 9999px;
-      padding: 1.5em 2em;
       box-shadow: none;
 
       // Scrolled state for home page
       &.scrolled {
         background: transparent !important;
         color: #ffffff !important;
-        border-radius: 0;
         padding: 1em 2em;
       }
     }
@@ -361,17 +356,42 @@ nav {
       width: auto;
       height: 40px;
       position: relative;
-
+      align-self: start;
+      bottom: 0.3em;
       svg {
         width: 80px;
         height: 40px;
       }
     }
 
+    // Ensure consistent logo positioning for home page too
+    body.home-page & {
+      padding: 1em 1em; /* Same padding as other pages */
+
+      .logo {
+        width: auto;
+        height: 40px;
+        position: relative;
+        align-self: start;
+        bottom: 0.3em;
+        svg {
+          width: 80px;
+          height: 40px;
+        }
+      }
+      .nav-btn-group {
+        padding: 0.1em 0.1em;
+        margin-left: auto;
+        margin-right: 1em;
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+
     .nav-btn-group {
       padding: 0.1em 0.1em;
       margin-left: auto;
-      margin-right: 0;
+      margin-right: 1em;
       align-items: center;
       justify-content: flex-end;
     }

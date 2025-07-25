@@ -18,6 +18,23 @@ const ProductDetail = () => {
     "Sky Blue": "#87CEEB",
     Gray: "#808080",
     Beige: "#F5F5DC",
+    Black: "#000000",
+    Blue: "#0000FF",
+    Red: "#FF0000",
+    Green: "#008000",
+    Yellow: "#FFFF00",
+    Orange: "#FFA500",
+    Purple: "#800080",
+    Brown: "#A52A2A",
+    Navy: "#000080",
+    Maroon: "#800000",
+    Olive: "#808000",
+    Lime: "#00FF00",
+    Aqua: "#00FFFF",
+    Teal: "#008080",
+    Silver: "#C0C0C0",
+    Fuchsia: "#FF00FF",
+    // Add more colors as needed
   };
 
   const { id } = useParams();
@@ -36,7 +53,7 @@ const ProductDetail = () => {
   // Use Redux instead of Context API
   const dispatch = useDispatch();
 
-  // Reset selections when product changes
+  // Reset selections when product changes and scroll to top
   useEffect(() => {
     if (product) {
       setSelectedSize("");
@@ -45,6 +62,16 @@ const ProductDetail = () => {
       setQuantity(1);
     }
   }, [product]);
+
+  // Scroll to top when component mounts or product ID changes
+  useEffect(() => {
+    // Small delay to ensure the page has rendered
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [id]);
 
   // Handle add to cart with Redux
   const handleAddToCart = () => {
@@ -150,7 +177,9 @@ const ProductDetail = () => {
                 <motion.button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`thumbnail-button ${currentImageIndex === index ? "active" : ""}`}
+                  className={`thumbnail-button ${
+                    currentImageIndex === index ? "active" : ""
+                  }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -289,13 +318,22 @@ const ProductDetail = () => {
                     <motion.button
                       key={color}
                       onClick={() => setSelectedColor(color)}
-                      className={`w-10 h-10 rounded-full border-2 ${
+                      className={`w-10 h-10 rounded-full transition-all duration-200 ${
                         selectedColor === color
-                          ? "border-indigo-600 ring-2 ring-indigo-300"
-                          : "border-gray-300 hover:border-gray-400"
-                      } transition-all duration-200`}
+                          ? "ring-2 ring-indigo-300"
+                          : "hover:ring-1 hover:ring-gray-400"
+                      }`}
                       style={{
-                        backgroundColor: colorMap[color] || color.toLowerCase(),
+                        backgroundColor:
+                          colorMap[color] ||
+                          (color.startsWith("#")
+                            ? color
+                            : color.toLowerCase().replace(/\s+/g, "")),
+                        border:
+                          selectedColor === color
+                            ? "3px solid #4f46e5"
+                            : "2px solid #d1d5db",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                       }}
                       title={
                         color.charAt(0).toUpperCase() +
@@ -426,14 +464,20 @@ const ProductDetail = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <ProductAccordion title="Shipping & Returns" className="accordion-item">
+              <ProductAccordion
+                title="Shipping & Returns"
+                className="accordion-item"
+              >
                 <p className="text-gray-600 accordion-content">
                   Free shipping on all orders over ₹50. Returns accepted within
                   30 days of delivery.
                 </p>
               </ProductAccordion>
 
-              <ProductAccordion title="Materials & Care" className="accordion-item">
+              <ProductAccordion
+                title="Materials & Care"
+                className="accordion-item"
+              >
                 <p className="text-gray-600 accordion-content">
                   Please refer to the product description for material details.
                   Follow care instructions on the label.
@@ -454,11 +498,8 @@ const ProductAccordion = ({ title, children, className }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`accordion-item ${className || ''}`}>
-      <button
-        className="accordion-button"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+    <div className={`accordion-item ${className || ""}`}>
+      <button className="accordion-button" onClick={() => setIsOpen(!isOpen)}>
         <span>{title}</span>
         <span>{isOpen ? "−" : "+"}</span>
       </button>
