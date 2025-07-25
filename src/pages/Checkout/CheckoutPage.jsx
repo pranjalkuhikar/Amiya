@@ -1,21 +1,39 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectCartItems, selectCartTotal } from '../../features/cartSlice';
-import './CheckoutPage.scss';
+import React from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectCartItems, selectCartTotal } from "../../features/cartSlice";
+import "./CheckoutPage.scss";
+import CustomAlert from "../../components/CustomAlert/CustomAlert";
 
 const CheckoutPage = () => {
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryMonth, setExpiryMonth] = useState("");
+  const [expiryYear, setExpiryYear] = useState("");
+  const [cvv, setCvv] = useState("");
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
 
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
   const handlePlaceOrder = () => {
-    // Placeholder for order processing logic
-    alert('Order Placed! (This is a placeholder)');
     // In a real application, you would send this data to a backend
     // and handle payment processing.
+    setAlert({
+      message:
+        "Your order has been successfully placed! Thank you for your purchase.",
+      type: "success",
+    });
+    // Optionally, clear the alert after a few seconds
+    setTimeout(() => setAlert({ message: "", type: "" }), 5000);
   };
 
   return (
     <div className="checkout-page">
+      <CustomAlert
+        message={alert.message}
+        type={alert.type}
+        onClose={() => setAlert({ message: "", type: "" })}
+      />
       <h1>Checkout</h1>
       <div className="checkout-content">
         <div className="shipping-payment-section">
@@ -43,21 +61,79 @@ const CheckoutPage = () => {
             </div>
           </form>
 
-          <h2>Payment Information</h2>
-          <form>
-            <div className="form-group">
-              <label htmlFor="cardNumber">Card Number</label>
-              <input type="text" id="cardNumber" name="cardNumber" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="expiryDate">Expiry Date (MM/YY)</label>
-              <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="cvv">CVV</label>
-              <input type="text" id="cvv" name="cvv" required />
-            </div>
-          </form>
+          <div className="payment">
+            <h2>Payment Information</h2>
+            <form className="payment-form">
+              <div className="form-group">
+                <label htmlFor="cardNumber" style={{ color: "white" }}>
+                  Card Number
+                </label>
+                <input
+                  type="text"
+                  id="cardNumber"
+                  value={cardNumber}
+                  onChange={(e) =>
+                    setCardNumber(
+                      e.target.value.replace(/[^0-9]/g, "").slice(0, 16)
+                    )
+                  }
+                  placeholder="4242 4242 4242 4242"
+                />
+              </div>
+
+              <div className="expiry-cvv-grid">
+                <div className="form-group">
+                  <label htmlFor="expiryMonth" style={{ color: "white" }}>
+                    Expiry Month
+                  </label>
+                  <input
+                    type="text"
+                    id="expiryMonth"
+                    placeholder="MM"
+                    value={expiryMonth}
+                    onChange={(e) =>
+                      setExpiryMonth(
+                        e.target.value.replace(/[^0-9]/g, "").slice(0, 2)
+                      )
+                    }
+                    maxLength="2"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="expiryYear" style={{ color: "white" }}>
+                    Expiry Year
+                  </label>
+                  <input
+                    type="text"
+                    id="expiryYear"
+                    placeholder="YY"
+                    value={expiryYear}
+                    onChange={(e) =>
+                      setExpiryYear(
+                        e.target.value.replace(/[^0-9]/g, "").slice(0, 2)
+                      )
+                    }
+                    maxLength="2"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="cvv" style={{ color: "white" }}>
+                    CVV
+                  </label>
+                  <input
+                    type="text"
+                    id="cvv"
+                    placeholder="123"
+                    value={cvv}
+                    onChange={(e) =>
+                      setCvv(e.target.value.replace(/[^0-9]/g, "").slice(0, 3))
+                    }
+                    maxLength="3"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
 
         <div className="order-summary-section">
@@ -69,7 +145,11 @@ const CheckoutPage = () => {
               <ul className="cart-items-list">
                 {cartItems.map((item) => (
                   <li key={item.id} className="cart-item">
-                    <img src={item.image} alt={item.name} className="item-image" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="item-image"
+                    />
                     <div className="item-details">
                       <h3>{item.name}</h3>
                       <p>Quantity: {item.quantity}</p>

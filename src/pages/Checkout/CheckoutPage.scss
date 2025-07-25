@@ -87,6 +87,7 @@
             width: 80px;
             height: 80px;
             object-fit: cover;
+            object-position: top;
             border-radius: 5px;
             margin-right: 20px;
           }
@@ -169,6 +170,173 @@
           font-size: 1.5em;
         }
       }
+    }
+  }
+}
+
+.payment {
+  margin-top: 3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.payment-form {
+  max-width: 480px;
+  margin: 1rem auto;
+  padding: 2rem;
+  background: #1c1c1c;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  font-family: "PPR";
+  color: #ffffff;
+
+  &__header {
+    font-family: "PPR";
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .card-preview {
+    background: #2a2a2a;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      width: 45px;
+      height: 28px;
+      background: linear-gradient(90deg, #ff0000 50%, #ff9900 50%);
+      border-radius: 4px;
+      opacity: 0.9;
+    }
+
+    .card-number {
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      margin-top: 3rem;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .card-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 2rem;
+
+      .card-name {
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+      }
+
+      .card-expiry {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 1.8rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.8rem;
+      font-size: 0.9rem;
+      color: #999999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      outline: none;
+
+      &::placeholder {
+        color: #666666;
+      }
+
+      &:focus {
+        border-color: #4a4a4a;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        outline: none;
+      }
+    }
+  }
+
+  .expiry-cvv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    .form-group {
+      margin-bottom: 0;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .checkout-button {
+    width: 100%;
+    padding: 1.2rem;
+    margin-top: 2rem;
+    background: linear-gradient(135deg, #ff4b1f 0%, #ff9068 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(255, 75, 31, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem;
+    .card-preview {
+      padding: 1rem;
+
+      .card-number {
+        font-size: 1.1rem;
+      }
+    }
+
+    .expiry-cvv-grid {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
     }
   }
 }

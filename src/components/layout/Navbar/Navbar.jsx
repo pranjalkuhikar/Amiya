@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, UserButton } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartCount } from "../../../features/cartSlice";

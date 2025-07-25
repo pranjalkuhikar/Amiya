@@ -239,7 +239,7 @@ const Cart = () => {
                       if (!isSignedIn) {
                         navigate("/sign-in");
                       } else {
-                        setIsCheckingOut(true);
+                        navigate("/checkout");
                       }
                     }}
                     className="checkout-button font-[PPS]"
