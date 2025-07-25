@@ -31,7 +31,8 @@ const ProductDetail = () => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const addButtonRef = useRef(null);
 
-  console.log(product);
+  console.log("Product ID from URL:", id);
+  console.log("Fetched product data:", product);
   // Use Redux instead of Context API
   const dispatch = useDispatch();
 

@@ -40,6 +40,12 @@
       font-family: "EditorialNew-Regular", serif;
     }
 
+    &.team-section {
+      h2 {
+        margin-bottom: 40px;
+      }
+    }
+
     p {
       font-size: 1.1em;
       margin-bottom: 15px;
@@ -62,6 +68,43 @@
         strong {
           color: #000;
         }
+      }
+    }
+  }
+
+  .founder-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 60px;
+    background-color: #fff;
+    padding: 60px;
+
+    .founder-content {
+      flex: 1;
+      h2 {
+        text-align: left;
+        margin-bottom: 20px;
+        font-size: 2.8em;
+      }
+      p {
+        text-align: left;
+        margin-bottom: 15px;
+        line-height: 1.8;
+      }
+    }
+
+    .founder-image-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .founder-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       }
     }
   }
@@ -106,6 +149,20 @@
     font-size: 0.9em;
   }
 }
+
+  @media (max-width: 1024px) {
+    .founder-section {
+      flex-direction: column;
+      text-align: center;
+
+      .founder-content {
+        h2,
+        p {
+          text-align: center;
+        }
+      }
+    }
+  }
 
 @media (max-width: 768px) {
   .about-page {
