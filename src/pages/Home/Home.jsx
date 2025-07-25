@@ -114,7 +114,8 @@ const Home = () => {
         },
       });
     });
-  }, []);
+
+    }, []);
 
   const addToRefs = (el, refArray) => {
     if (el && !refArray.current.includes(el)) {
