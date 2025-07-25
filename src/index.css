@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
-/* Smooth scrolling */
+/* Enhanced Lenis Smooth Scrolling */
 html.lenis {
+  height: auto;
+}
+
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -19,4 +24,36 @@ html.lenis {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Global scrollbar hiding */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+html,
+body,
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Ensure smooth scrolling works on all elements */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal overflow */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Optimize rendering for smooth scrolling */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

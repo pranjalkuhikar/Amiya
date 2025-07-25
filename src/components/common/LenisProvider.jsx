@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import gsap from 'gsap';
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,17 +11,22 @@ export default function LenisProvider({ children }) {
 
   useEffect(() => {
     // Only run on client-side
-    if (typeof window !== 'undefined') {
-      import('lenis').then(({ default: Lenis }) => {
+    if (typeof window !== "undefined") {
+      import("lenis").then(({ default: Lenis }) => {
         // Initialize Lenis
         const lenis = new Lenis({
           duration: 1.2,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
-          direction: 'vertical',
-          gestureDirection: 'vertical',
+          direction: "vertical",
+          gestureDirection: "vertical",
           smooth: true,
           smoothTouch: false,
           touchMultiplier: 2,
+          infinite: false,
+          normalizeWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 2,
+          autoResize: true,
         });
 
         // Store lenis instance in ref
@@ -29,7 +34,7 @@ export default function LenisProvider({ children }) {
 
         // Update ScrollTrigger on scroll
         function updateScroll() {
-          lenis.on('scroll', ScrollTrigger.update);
+          lenis.on("scroll", ScrollTrigger.update);
         }
 
         // Call requestAnimationFrame for smooth scrolling
@@ -58,6 +63,19 @@ export default function LenisProvider({ children }) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
   }, [location.pathname]);
+
+  // Expose lenis instance globally for external control
+  useEffect(() => {
+    if (lenisRef.current) {
+      window.lenis = lenisRef.current;
+    }
+
+    return () => {
+      if (window.lenis) {
+        delete window.lenis;
+      }
+    };
+  }, [lenisRef.current]);
 
   return children;
 }

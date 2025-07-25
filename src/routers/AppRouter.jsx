@@ -24,6 +24,43 @@ const AppRouter = () => {
     gsap.set(mainContentRef.current, { opacity: 0 });
   }, []);
 
+  // Lock/unlock scroll when loader is active
+  useEffect(() => {
+    if (loading) {
+      // Lock scroll and disable Lenis
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100vh";
+      document.documentElement.style.overflow = "hidden";
+
+      // Stop Lenis if available
+      if (window.lenis) {
+        window.lenis.stop();
+      }
+    } else {
+      // Unlock scroll and re-enable Lenis
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+
+      // Start Lenis if available
+      if (window.lenis) {
+        window.lenis.start();
+      }
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+
+      // Ensure Lenis is started on cleanup
+      if (window.lenis) {
+        window.lenis.start();
+      }
+    };
+  }, [loading]);
+
   const handleLoaderComplete = () => {
     gsap.fromTo(
       ".home",
