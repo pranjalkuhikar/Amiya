@@ -19,7 +19,7 @@
     "@stripe/react-stripe-js": "^3.8.0",
     "@stripe/stripe-js": "^7.6.1",
     "@tailwindcss/vite": "^4.1.11",
-    "framer-motion": "^12.23.6",
+    "framer-motion": "^12.23.9",
     "gsap": "^3.13.0",
     "json-server": "^1.0.0-beta.3",
     "keen-slider": "^6.8.6",

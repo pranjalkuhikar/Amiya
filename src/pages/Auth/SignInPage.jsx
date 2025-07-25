@@ -1,6 +1,9 @@
 import { SignIn } from "@clerk/clerk-react";
+import { useSearchParams } from "react-router-dom";
 
 const SignInPage = () => {
+  const [searchParams] = useSearchParams();
+  const redirectUrl = searchParams.get("redirect_url");
   return (
     <div
       style={{
@@ -11,7 +14,12 @@ const SignInPage = () => {
         margin: "3.5em 0",
       }}
     >
-      <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+      <SignIn
+        path="/sign-in"
+        routing="path"
+        signUpUrl="/sign-up"
+        afterSignInUrl={redirectUrl || "/"}
+      />
     </div>
   );
 };

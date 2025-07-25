@@ -1,0 +1,113 @@
+.about-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Light beige background */
+  padding: 20px;
+
+  @media (max-width: 767px) {
+    margin-top: 4em;
+    padding: 10px;
+  }
+  @media (max-width: 512px) {
+    margin-top: 4em;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    .text-section {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #333;
+
+      .founder-label {
+        font-size: 0.9em;
+        color: #4f46e5; /* Sienna color */
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .founder-name {
+        font-family: "PPS";
+        font-size: 2.5em; /* Adjusted for smaller screens */
+        line-height: 1.1;
+        margin-bottom: 20px;
+        color: #333;
+
+        @media (min-width: 768px) {
+          font-size: 5em;
+        }
+
+        @media (max-width: 480px) {
+          font-size: 2em;
+        }
+      }
+    }
+
+    .ceo-title {
+      font-size: 1em;
+      color: #4f46e5;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .description {
+      font-size: 1em; /* Adjusted for smaller screens */
+      line-height: 1.6;
+      margin-bottom: 30px;
+      color: #555;
+
+      @media (max-width: 480px) {
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  .website-link {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #4f46e5; /* Darker sienna */
+    }
+
+    .arrow {
+      margin-left: 5px;
+      font-size: 1.2em;
+    }
+  }
+}
+
+.image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
