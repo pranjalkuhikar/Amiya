@@ -11,7 +11,7 @@ import CheckoutPage from "../pages/Checkout/CheckoutPage";
 import SignInPage from "../pages/Auth/SignInPage";
 import SignUpPage from "../pages/Auth/SignUpPage";
 import Dashboard from "../pages/Account/Dashboard";
-import Loader from "../components/common/Loader/Loader";
+import Loader from "../components/Loader/Loader";
 import gsap from "gsap";
 import Footer from "../components/layout/Footer/Footer";
 import ProductDetail from "../pages/Shop/ProductDetail";
