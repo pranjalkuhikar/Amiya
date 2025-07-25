@@ -34,6 +34,16 @@ const PageTransition = ({ children }) => {
       return "Checkout";
     }
 
+    // Handle 404 pages
+    if (
+      !pageNames[path] &&
+      !path.startsWith("/product/") &&
+      !path.startsWith("/category/") &&
+      !path.startsWith("/checkout")
+    ) {
+      return "404 Not Found";
+    }
+
     return pageNames[path] || "Page";
   };
 

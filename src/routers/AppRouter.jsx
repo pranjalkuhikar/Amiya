@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Home from "../pages/Home/Home";
 import AboutPage from "../pages/About/AboutPage";
@@ -15,6 +15,7 @@ import gsap from "gsap";
 import Footer from "../components/layout/Footer/Footer";
 import ProductDetail from "../pages/Shop/ProductDetail";
 import PageTransition from "../components/common/PageTransition/PageTransition";
+import NotFound from "../pages/NotFound/NotFound";
 
 const AppRouter = () => {
   const [loading, setLoading] = useState(true);
@@ -98,7 +99,7 @@ const AppRouter = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </PageTransition>
         <Footer />
