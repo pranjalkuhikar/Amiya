@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import './Loader.scss';
 
-const Loader = () => {
+const Loader = ({ onAnimationComplete }) => {
   const loaderRef = useRef(null);
   const textRef = useRef(null);
 
@@ -20,8 +20,9 @@ const Loader = () => {
       duration: 1.5,
       ease: 'power3.inOut',
       delay: 0.5,
+      onComplete: onAnimationComplete, // Call the callback when animation is complete
     });
-  }, []);
+  }, [onAnimationComplete]);
 
   return (
     <div className="loader" ref={loaderRef}>
