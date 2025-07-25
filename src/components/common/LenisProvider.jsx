@@ -25,7 +25,6 @@ export default function LenisProvider({ children }) {
           infinite: false,
           normalizeWheel: true,
           wheelMultiplier: 1,
-          touchMultiplier: 2,
           autoResize: true,
         });
 

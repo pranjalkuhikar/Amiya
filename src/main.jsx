@@ -10,7 +10,6 @@ import { store } from "./app/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { clerkAppearance } from "./clerk-appearance";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -22,10 +21,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ClerkProvider
-          publishableKey={PUBLISHABLE_KEY}
-          appearance={clerkAppearance}
-        >
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <LenisProvider>
             <App />
             <ToastContainer
