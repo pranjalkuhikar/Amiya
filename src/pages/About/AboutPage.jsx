@@ -37,10 +37,10 @@ const AboutPage = () => {
             imageSrc="/images/founder.jpg"
             altText="AIMEESONG"
             captionText="AIMEESONG"
-            containerHeight="300px"
-            containerWidth="300px"
-            imageHeight="300px"
-            imageWidth="300px"
+            containerHeight="400px"
+            containerWidth="400px"
+            imageHeight="400px"
+            imageWidth="400px"
             rotateAmplitude={12}
             scaleOnHover={1.2}
             showMobileWarning={false}

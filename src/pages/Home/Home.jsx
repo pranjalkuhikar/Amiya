@@ -226,9 +226,10 @@ const Home = () => {
       <div>
         <ScrollVelocity
           texts={[
-            "Explore Collection Shirt and Top Pants and Shots Sweters and Jackets Skirts Dresses",
+            "Explore Collection Shirt and Top Pants and Shots ",
+            "Sweters and Jackets Skirts Dresses",
           ]}
-          className="custom-scroll-text"
+          className="custom-scroll-text font-[PPEI]"
         />
       </div>
     </>
