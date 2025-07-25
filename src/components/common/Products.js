@@ -1,7 +1,7 @@
 import React from "react";
-import { useGetProductsQuery } from "../features/apiSlice";
+import { useGetProductsQuery } from "../../features/apiSlice";
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../features/cartSlice';
+import { addToCart } from '../../features/cartSlice';
 
 const Products = () => {
   const { data: products, isLoading, isError } = useGetProductsQuery();

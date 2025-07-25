@@ -1,0 +1,140 @@
+.about-page {
+  font-family: "PPMori-Regular", sans-serif;
+  color: #333;
+  line-height: 1.6;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  .about-header {
+    text-align: center;
+    margin-bottom: 60px;
+
+    h1 {
+      font-size: 3.5em;
+      color: #000;
+      margin-bottom: 15px;
+      font-family: "EditorialNew-Regular", serif;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #555;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
+
+  .about-section {
+    margin-bottom: 60px;
+    padding: 40px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+    h2 {
+      font-size: 2.5em;
+      color: #000;
+      margin-bottom: 25px;
+      text-align: center;
+      font-family: "EditorialNew-Regular", serif;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+
+      li {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        font-size: 1.05em;
+        strong {
+          color: #000;
+        }
+      }
+    }
+  }
+
+  .team-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+
+    .team-member {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      flex: 1;
+      min-width: 280px;
+      max-width: 350px;
+
+      h3 {
+        font-size: 1.8em;
+        color: #000;
+        margin-bottom: 10px;
+        font-family: "EditorialNew-Regular", serif;
+      }
+
+      p {
+        font-size: 1em;
+        color: #666;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .about-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+    color: #777;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-page {
+    padding: 20px;
+
+    .about-header {
+      h1 {
+        font-size: 2.5em;
+      }
+      p {
+        font-size: 1em;
+      }
+    }
+
+    .about-section {
+      padding: 25px;
+
+      h2 {
+        font-size: 2em;
+      }
+
+      ul {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .team-section {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

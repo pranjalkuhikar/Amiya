@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
 
         {/* Middle Section */}
-        <div className="part-2 flex flex-row justify-start gap-10 md:gap-20 lg:gap-40 md:p-16">
+        <div className="part-2 flex flex-row flex-wrap text-center md:text-left justify-start gap-10 md:gap-20 lg:gap-40 md:p-16">
           <div className="flex flex-col gap-5">
             <h3 className="text-xl font-[PPS]">Sitemap</h3>
             <div className="flex flex-col gap-3 text-gray-600">

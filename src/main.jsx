@@ -4,7 +4,7 @@ import "./index.scss";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import LenisProvider from "./components/LenisProvider";
+import LenisProvider from "./components/common/LenisProvider";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { ToastContainer } from "react-toastify";

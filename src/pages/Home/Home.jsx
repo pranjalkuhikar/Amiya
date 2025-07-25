@@ -7,7 +7,7 @@ import "keen-slider/keen-slider.min.css";
 import SliderCards from "../../components/SliderCard/SliderCards";
 import ArrowButton from "../../components/common/ArrowButton";
 import { Link } from "react-router-dom";
-import ScrollVelocity from "../../components/ScrollVelocity";
+import ScrollVelocity from "../../components/common/ScrollVelocity";
 
 gsap.registerPlugin(ScrollTrigger);
 
