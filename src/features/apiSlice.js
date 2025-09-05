@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://amiya-data.vercel.app" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://amiya.com/collections/all" }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
     // Products endpoints
@@ -11,7 +11,7 @@ export const apiSlice = createApi({
       providesTags: ["Product"],
       transformResponse: (response) => {
         // Transform the response to match the expected format
-        return response.products.map(product => {
+        return response.products.map((product) => {
           // Extract sizes from variants
           const sizes = [
             ...new Set(
@@ -64,7 +64,7 @@ export const apiSlice = createApi({
       transformResponse: (response, _, id) => {
         if (!response) return null;
         const productIdNum = Number(id);
-        const product = response.products.find(p => p.id === productIdNum);
+        const product = response.products.find((p) => p.id === productIdNum);
         if (!product) return null;
 
         // Extract sizes from variants
